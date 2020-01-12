@@ -6,12 +6,7 @@ export default function Loading(props) {
   const { isVisible, text } = props;
 
   return (
-    <Overlay
-      isVisible={isVisible}
-      windowBackgroundColor="rgba{0,0,0, .5}"
-      overlayBackgroundColor="transparent"
-      overlayStyle={styles.overlay}
-    >
+    <Overlay isVisible={isVisible} overlayStyle={styles.overlay}>
       <View style={styles.view}>
         <ActivityIndicator size="large" color="#2BA418"></ActivityIndicator>
         {text && <Text style={styles.text}>{text}</Text>}

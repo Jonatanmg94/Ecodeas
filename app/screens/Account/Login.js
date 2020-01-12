@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useRef } from "react";
 import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
-import { Divider } from "react-native-elements";
+import { Divider, Card } from "react-native-elements";
+import LoginForm from "../../components/Account/LoginForm";
+import Toast from "react-native-easy-toast";
+import LoginFacebook from "../../components/Account/LoginFacebook";
 
 export default function Login(props) {
   const { navigation } = props;
+  const toastRef = useRef();
 
   return (
     <ScrollView>
@@ -13,13 +17,24 @@ export default function Login(props) {
         resizeMode="contain"
       />
       <View style={styles.viewContainer}>
-        <Text>Form Login</Text>
+        <Card title="Accede a tu cuenta" style={styles.cardLogin}>
+          <LoginForm toastRef={toastRef} />
+        </Card>
         <CreateAccount navigation={navigation} />
       </View>
       <Divider style={styles.divider} />
       <View style={styles.viewContainer}>
-        <Text>Login facebook</Text>
+        <LoginFacebook toastRef={toastRef} navigation={navigation} />
       </View>
+      <Toast
+        ref={toastRef}
+        opacity={0.8}
+        style={{ backgroundColor: "green" }}
+        position="top"
+        positionValue={200}
+        fadeInDuration={750}
+        fadeOutDuration={1000}
+      />
     </ScrollView>
   );
 }
@@ -27,31 +42,33 @@ export default function Login(props) {
 function CreateAccount(props) {
   const { navigation } = props;
   return (
-    <Text style={styles.textRegister}>
-      Aún no tienes cuent?{" "}
-      <Text
-        style={styles.btnRegister}
-        onPress={() => navigation.navigate("Register")}
-      >
-        Regístrate
+    <View style={styles.viewTextRegister}>
+      <Text style={styles.textRegister}>
+        ¿Aún no tienes cuenta?{"  "}
+        <Text
+          style={styles.btnRegister}
+          onPress={() => navigation.navigate("Register")}
+        >
+          Regístrate
+        </Text>
       </Text>
-    </Text>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   logo: {
     width: "100%",
-    height: 250,
-    marginTop: 20
+    height: 150,
+    marginTop: 30
   },
   viewContainer: {
-    marginRight: 40,
-    marginLeft: 40
+    marginRight: 5,
+    marginLeft: 5
   },
   divider: {
     backgroundColor: "#2BA418",
-    margin: 40
+    margin: 15
   },
   textRegister: {
     marginTop: 15,
@@ -61,5 +78,8 @@ const styles = StyleSheet.create({
   btnRegister: {
     color: "#2BA418",
     fontWeight: "bold"
+  },
+  viewTextRegister: {
+    alignItems: "center"
   }
 });

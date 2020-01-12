@@ -7,19 +7,40 @@ const AccountScreenStacks = createStackNavigator({
   MyAccount: {
     screen: AccountScreen,
     navigationOptions: () => ({
-      title: "Mi cuenta"
+      title: "Mi cuenta",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   },
   Login: {
     screen: LoginScreen,
     navigationOptions: () => ({
-      title: "Login"
+      title: "Iniciar sesión",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   },
   Register: {
     screen: RegisterScreen,
     navigationOptions: () => ({
-      title: "Registro"
+      title: "Registro",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   }
 });

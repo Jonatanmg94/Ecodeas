@@ -29,6 +29,7 @@ function RegisterForm(props) {
             1000
           );
         } else {
+          console.log("email: " + email + " contraseña: " + password);
           await firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
@@ -108,18 +109,18 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    marginTop: 30
+    justifyContent: "center"
   },
   inputForm: {
     width: "100%",
-    marginTop: 20
+    marginTop: 5,
+    marginBottom: 19
   },
   iconRight: {
     color: "#c1c1c1"
   },
   btnContainerRegister: {
-    marginTop: 20,
+    marginTop: 10,
     width: "95%"
   },
   btnRegister: {
