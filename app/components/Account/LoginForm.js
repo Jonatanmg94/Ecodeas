@@ -7,7 +7,6 @@ import Loading from "../Loading";
 import * as firebase from "firebase";
 
 function LoginForm(props) {
-  console.log(props);
   const { toastRef, navigation } = props;
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");

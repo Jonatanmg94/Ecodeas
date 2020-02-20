@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import { Avatar } from "react-native-elements";
+import { Avatar, Card, ListItem, Button } from "react-native-elements";
 import * as firebase from "firebase";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import { YellowBox } from "react-native";
+import { withNavigation } from "react-navigation";
+import Modal from "../Modal";
+import ChangeDisplayNameForm from "../Account/ChangeDisplayNameForm";
+import ChangeEmailForm from "../Account/ChangeEmailForm";
+import ChangePasswordForm from "../Account/ChangePasswordForm";
 
-export default function InfoUser(props) {
+function InfoUser(props) {
+  YellowBox.ignoreWarnings(["Setting a timer"]);
+  const { userInfo } = props;
+  const [isVisibleModal, setIsVisibleModal] = useState(false);
+  const [renderComponent, setRenderComponent] = useState(null);
   const {
-    userInfo: { uid, displayName, email, photoURL }
+    userInfo: { uid, displayName, email, photoURL },
+    setReloadData,
+    toastRef,
+    setIsLoading,
+    setTextLoading,
+    navigation
   } = props;
 
   const changeAvatar = async () => {
@@ -18,7 +33,10 @@ export default function InfoUser(props) {
       resultPermission.permissions.cameraRoll.status;
 
     if (resultPermissionCamera == "denied") {
-      console.log("Es necesario aceptar los permisos de la galería.");
+      toastRef.current.show(
+        "Es necesario aceptar los permisos de la galería.",
+        1000
+      );
     } else {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
@@ -26,16 +44,124 @@ export default function InfoUser(props) {
       });
 
       if (result.cancelled) {
-        console.log("has cancelado la galeria");
+        toastRef.current.show("Has cerrado la galería de imágenes.", 1500);
       } else {
-        uploadImage(result.uri, uid);
+        uploadImage(result.uri, uid).then(() => {
+          toastRef.current.show("La imagen se ha subido correctamente.", 1500);
+          updatePhotoUrl(uid);
+        });
       }
     }
   };
 
   const uploadImage = async (uri, nameImage) => {
+    setTextLoading("Actualizando Avatar");
+    setIsLoading(true);
     const response = await fetch(uri);
-    console.log(response);
+    const blob = await response.blob();
+
+    const ref = firebase
+      .storage()
+      .ref()
+      .child(`UsersAvatars/${nameImage}`);
+    return ref.put(blob);
+  };
+
+  const updatePhotoUrl = uid => {
+    firebase
+      .storage()
+      .ref(`UsersAvatars/${uid}`)
+      .getDownloadURL()
+      .then(async result => {
+        const update = {
+          photoURL: result
+        };
+        await firebase.auth().currentUser.updateProfile(update);
+        setReloadData(true);
+        setIsLoading(false);
+        navigation.state.params.setReloadData("true");
+        navigation.goBack();
+      })
+      .catch(() => {
+        toastRef.current.show(
+          "Error al recuperar el avatar del servidor.",
+          1500
+        );
+      });
+  };
+
+  const menuOptions = [
+    {
+      title: "Cambiar Nombre y apellidos",
+      iconType: "material-community",
+      iconNameLeft: "account-circle",
+      iconColorLeft: "#A3A3A3",
+      iconNameRight: "chevron-right",
+      iconColorRight: "#A3A3A3",
+      onPress: () => selectedComponent("displayName")
+    },
+    {
+      title: "Cambiar Email",
+      iconType: "material-community",
+      iconNameLeft: "at",
+      iconColorLeft: "#A3A3A3",
+      iconNameRight: "chevron-right",
+      iconColorRight: "#A3A3A3",
+      onPress: () => selectedComponent("email")
+    },
+    {
+      title: "Cambiar Contraseña",
+      iconType: "material-community",
+      iconNameLeft: "lock-reset",
+      iconColorLeft: "#A3A3A3",
+      iconNameRight: "chevron-right",
+      iconColorRight: "#A3A3A3",
+      onPress: () => selectedComponent("password")
+    }
+  ];
+
+  const RefreshAndGoBack = () => {
+    navigation.state.params.setReloadData("true"), navigation.goBack();
+  };
+
+  const selectedComponent = key => {
+    switch (key) {
+      case "displayName":
+        setRenderComponent(
+          <ChangeDisplayNameForm
+            displayName={userInfo.displayName}
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
+        setIsVisibleModal(true);
+        break;
+      case "email":
+        setRenderComponent(
+          <ChangeEmailForm
+            email={userInfo.email}
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
+        setIsVisibleModal(true);
+        break;
+      case "password":
+        setRenderComponent(
+          <ChangePasswordForm
+            userInfo={userInfo}
+            setIsVisibleModal={setIsVisibleModal}
+            toastRef={toastRef}
+            navigation={navigation}
+          />
+        );
+        setIsVisibleModal(true);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -54,14 +180,50 @@ export default function InfoUser(props) {
         }}
       />
       <View style={styles.viewUserName}>
-        <Text style={styles.displayName}>
-          {displayName ? displayName : "anonimo"}
-        </Text>
-        <Text style={styles.displayEmail}>{email ? email : "sin email"}</Text>
+        <Card containerStyle={styles.cardUserData}>
+          <Text style={styles.displayName}>
+            {displayName ? displayName : "Usuario anónimo"}
+          </Text>
+          <Text style={styles.displayEmail}>{email ? email : "sin email"}</Text>
+          <View>
+            {menuOptions.map((menu, index) => (
+              <ListItem
+                key={index}
+                title={menu.title}
+                leftIcon={{
+                  type: menu.iconType,
+                  name: menu.iconNameLeft,
+                  color: menu.iconColorLeft
+                }}
+                rightIcon={{
+                  type: menu.iconType,
+                  name: menu.iconNameRight,
+                  color: menu.iconColorRight
+                }}
+                onPress={menu.onPress}
+                containerStyle={styles.menuItem}
+              />
+            ))}
+          </View>
+          <Button
+            title="Volver a mi cuenta"
+            buttonStyle={styles.btnStyle}
+            containerStyle={styles.btnContainer}
+            onPress={RefreshAndGoBack}
+          />
+        </Card>
       </View>
+      {renderComponent && (
+        <Modal isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>
+          {renderComponent}
+        </Modal>
+      )}
     </View>
   );
 }
+
+export default withNavigation(InfoUser);
+
 const styles = StyleSheet.create({
   viewUserInfo: {
     alignItems: "center",
@@ -70,23 +232,40 @@ const styles = StyleSheet.create({
     paddingBottom: 30
   },
   userInfoAvatar: {
-    marginRight: 20,
     borderWidth: 5,
     borderColor: "#CDCDCD",
     borderStyle: "solid"
   },
   displayName: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#2BA418"
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold"
   },
   displayEmail: {
+    textAlign: "center",
     fontSize: 14,
-    color: "#2BA418"
+    paddingBottom: 10
   },
   viewUserName: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10
+    width: "95%"
+  },
+  cardUserData: {
+    width: "95%",
+    paddingBottom: 10
+  },
+  menuItem: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#e3e3e3",
+    backgroundColor: "#EBEBEB",
+    paddingBottom: 10
+  },
+  btnStyle: {
+    backgroundColor: "#2BA418"
+  },
+  btnContainer: {
+    width: "100%",
+    paddingTop: 10
   }
 });

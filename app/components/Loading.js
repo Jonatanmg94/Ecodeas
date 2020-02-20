@@ -30,9 +30,10 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   text: {
+    textAlign: "center",
     color: "#2BA418",
     textTransform: "uppercase",
-    marginTop: 10,
+    marginTop: 20,
     fontWeight: "700"
   }
 });

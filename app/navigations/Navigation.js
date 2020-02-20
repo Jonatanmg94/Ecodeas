@@ -2,8 +2,8 @@ import React from "react";
 import { Icon } from "react-native-elements";
 import { createAppContainerv, createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-import PostsScreenStacks from "./Posts";
-import EventsScreenStacks from "./Events";
+import PostsScreenStacks from "./PostScreenStacks";
+import EventsScreenStacks from "./EventsStacks";
 import SearchSreenStacks from "./SearchStacks";
 import AccountScreenStacks from "./AccountStacks";
 
@@ -67,7 +67,7 @@ const NavigationStacks = createBottomTabNavigator(
     }
   },
   {
-    initialRouteName: "MyAccount",
+    initialRouteName: "Events",
     order: ["Search", "Posts", "Events", "MyAccount"],
     tabBarOptions: {
       inactiveTintColor: "#CACACA",
