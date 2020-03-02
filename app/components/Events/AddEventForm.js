@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ScrollView, Alert, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Alert,
+  Dimensions,
+  Picker
+} from "react-native";
 import {
   Icon,
   Avatar,
@@ -7,10 +14,17 @@ import {
   Input,
   Button,
   Card,
-  CheckBox
+  CheckBox,
+  Divider,
+  Text
 } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
+import MapView, { Marker } from "react-native-maps";
+import Modal from "../Modal";
+import * as Location from "expo-location";
+import moment from "moment";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 const widthScreen = Dimensions.get("window").width;
 
@@ -19,11 +33,61 @@ export default function AddEventForm(props) {
   const [imagesSelected, setImagesSelected] = useState([]);
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
-  const [eventMapUbication, setEventMapUbication] = useState("");
+  const [eventDateInit, setEventDateInit] = useState("");
+  const [eventDateFin, setEventDateFin] = useState("");
+  const [eventType, setEventType] = useState("");
+  const [eventStatus, setEventStatus] = useState("");
+  const [eventCapacity, setEventCapacity] = useState("");
+  const [eventLocation, setEventLocation] = useState("");
+  const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [eventCountry, setEventCountry] = useState("");
   const [eventState, setEventState] = useState("");
   const [eventStreet, setEventStreet] = useState("");
   const [eventPostalCode, setEventPostalCode] = useState("");
+
+  const addEvent = () => {
+    if (
+      !eventName ||
+      !eventDescription ||
+      !eventType ||
+      !eventCapacity ||
+      !eventCountry ||
+      !eventState ||
+      !eventStreet ||
+      !eventPostalCode
+    ) {
+      toastRef.current.show(
+        "Todos los campos del formulario son obligatorios",
+        3000
+      );
+    } else if (imagesSelected.length === 0) {
+      toastRef.current.show("El evento tiene que tener almenos una foto", 3000);
+    } else if (!eventLocation) {
+      toastRef.current.show(
+        "Debes establecer la localización en el mapa",
+        3000
+      );
+    } else if (!eventDateInit || !eventDateFin) {
+      toastRef.current.show("Debes establecer las dos fechas del evento", 3000);
+    } else {
+      setIsLoading(true);
+      console.log("todo correcto");
+    }
+  };
+
+  const testeoVariables = () => {
+    console.log("eventName " + eventName);
+    console.log("eventDescription " + eventDescription);
+    console.log("eventCapacity " + eventCapacity);
+    console.log("eventLocation " + eventLocation);
+    console.log("eventCountry " + eventCountry);
+    console.log("eventState " + eventState);
+    console.log("eventStreet " + eventStreet);
+    console.log("eventPostalCode " + eventPostalCode);
+    console.log("eventdateInit " + eventDateInit);
+    console.log("eventdateFin " + eventDateFin);
+    console.log("eventype " + eventType);
+  };
 
   return (
     <ScrollView>
@@ -33,8 +97,218 @@ export default function AddEventForm(props) {
         setImagesSelected={setImagesSelected}
         toastRef={toastRef}
       />
-      <FormAdd />
+      <FormAdd
+        setEventName={setEventName}
+        setEventDescription={setEventDescription}
+        setEventDateInit={setEventDateInit}
+        setEventDateFin={setEventDateFin}
+        eventDateInit={eventDateInit}
+        eventDateFin={eventDateFin}
+        setEventType={setEventType}
+        eventType={eventType}
+        setEventStatus={setEventStatus}
+        setEventCapacity={setEventCapacity}
+        setEventLocation={setEventLocation}
+        eventLocation={eventLocation}
+        setEventCountry={setEventCountry}
+        setEventState={setEventState}
+        setEventStreet={setEventStreet}
+        setEventPostalCode={setEventPostalCode}
+        setIsVisibleMap={setIsVisibleMap}
+        testeoVariables={testeoVariables}
+      />
+      <Map
+        isVisibleMap={isVisibleMap}
+        setIsVisibleMap={setIsVisibleMap}
+        setEventLocation={setEventLocation}
+        toastRef={toastRef}
+      />
+      <Button
+        title="Crear nuevo evento"
+        onPress={addEvent}
+        buttonStyle={styles.btnCreateEvent}
+      />
     </ScrollView>
+  );
+}
+
+function FormAdd(props) {
+  const {
+    setEventName,
+    setEventDescription,
+    setEventDateInit,
+    setEventDateFin,
+    eventDateInit,
+    eventDateFin,
+    eventLocation,
+    setEventType,
+    eventType,
+    setEventStatus,
+    setEventCapacity,
+    setEventLocation,
+    setEventCountry,
+    setEventState,
+    setEventStreet,
+    setEventPostalCode,
+    setIsVisibleMap,
+    testeoVariables
+  } = props;
+
+  return (
+    <View style={styles.viewForm}>
+      <Card>
+        <View>
+          <Text style={styles.txtHeadline} h4>
+            Información
+          </Text>
+          <Input
+            placeholder="Nombre del evento"
+            containerStyle={styles.input}
+            onChange={e => setEventName(e.nativeEvent.text)}
+          />
+          <Input
+            placeholder="Descripción"
+            containerStyle={styles.textArea}
+            multiline={true}
+            onChange={e => setEventDescription(e.nativeEvent.text)}
+          />
+        </View>
+      </Card>
+      <Card>
+        <View style={styles.containerEventType}>
+          <Text style={styles.txtHeadline} h4>
+            Otros datos
+          </Text>
+          <Picker
+            mode={"dropdown"}
+            selectedValue={eventType == null ? "java" : eventType}
+            style={styles.pickEventType}
+            onValueChange={(itemValue, itemIndex) => setEventType(itemValue)}
+          >
+            <Picker.Item label="Recogida de basura" value="recogidas" />
+            <Picker.Item label="Talleres" value="talleres" />
+            <Picker.Item label="Charlas" value="charlas" />
+            <Picker.Item label="Ferias" value="ferias" />
+            <Picker.Item label="Manifestaciones" value="manifestaciones" />
+            <Picker.Item label="Reforestaciones" value="reforestaciones" />
+          </Picker>
+          <Divider style={{ backgroundColor: "grey", height: 1 }} />
+          <Input
+            placeholder="Aforo del evento"
+            containerStyle={styles.input}
+            keyboardType="numeric"
+            maxLength={1000000}
+            onChange={e => setEventCapacity(e.nativeEvent.text)}
+          />
+        </View>
+      </Card>
+      <Card>
+        <Text style={styles.txtHeadline} h4>
+          Ubicación
+        </Text>
+        <Input
+          placeholder="Ubicación en el mapa"
+          rightIcon={{
+            type: "material-community",
+            name: "google-maps",
+            color: eventLocation ? "#2BA418" : "#c2c2c2",
+            onPress: () => setIsVisibleMap(true)
+          }}
+          containerStyle={styles.input}
+          onChange={e => setEventLocation(e.nativeEvent.text)}
+        />
+        <Input
+          placeholder="País"
+          containerStyle={styles.input}
+          onChange={e => setEventCountry(e.nativeEvent.text)}
+        />
+        <Input
+          placeholder="Municipio"
+          containerStyle={styles.input}
+          onChange={e => setEventState(e.nativeEvent.text)}
+        />
+        <Input
+          placeholder="Calle"
+          containerStyle={styles.input}
+          onChange={e => setEventStreet(e.nativeEvent.text)}
+        />
+        <Input
+          placeholder="Código Postal"
+          containerStyle={styles.input}
+          onChange={e => setEventPostalCode(e.nativeEvent.text)}
+        />
+      </Card>
+    </View>
+  );
+}
+
+function Map(props) {
+  const { isVisibleMap, setIsVisibleMap, setEventLocation, toastRef } = props;
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status !== "granted") {
+        toastRef.current.show(
+          "Tienes que aceptar los permisos de localización para crear un evento.",
+          3000
+        );
+      } else {
+        let loc = await Location.getCurrentPositionAsync({});
+        setLocation({
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+          latitudeDelta: 0.001 * 60,
+          longitudeDelta: 0.001 * 60
+        });
+      }
+    })();
+  }, []);
+
+  const confirmLocation = () => {
+    setEventLocation(location);
+    toastRef.current.show("Localización guardada correctamente");
+    setIsVisibleMap(false);
+  };
+
+  return (
+    <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
+      <View>
+        {location && (
+          <MapView
+            style={styles.mapStyle}
+            initialRegion={location}
+            showsUserLocation={true}
+            onRegionChange={region => setLocation(region)}
+          >
+            <MapView.Marker
+              draggable
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+                longitudeDelta: location.longitudeDelta,
+                latitudeDelta: location.latitudeDelta
+              }}
+            />
+          </MapView>
+        )}
+        <View style={styles.viewMapBtn}>
+          <Button
+            title="Guardar Ubicación"
+            onPress={confirmLocation}
+            containerStyle={styles.viewMapBtnContainerSave}
+            buttonStyle={styles.viewMapBtnSave}
+          />
+          <Button
+            title="Cancelar Ubicación"
+            onPress={() => setIsVisibleMap(false)}
+            containerStyle={styles.viewMapBtnContainerCancel}
+            buttonStyle={styles.viewMapBtnCancel}
+          />
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -57,7 +331,6 @@ function ImageEventFeatured(props) {
     </View>
   );
 }
-
 function UploadImage(props) {
   const { imagesSelected, setImagesSelected, toastRef } = props;
 
@@ -138,90 +411,17 @@ function UploadImage(props) {
   );
 }
 
-function FormAdd(props) {
-  return (
-    <View style={styles.viewForm}>
-      <Card>
-        <Input
-          placeholder="Nombre del evento"
-          containerStyle={styles.input}
-          onChange={() => console.log("Nombre del evento actualizado")}
-        />
-        <Input
-          placeholder="Descripción"
-          containerStyle={styles.textArea}
-          multiline={true}
-          onChange={() => console.log("Descripción actualizada.")}
-        />
-        <Input
-          placeholder="Ubicación en el mapa"
-          rightIcon={{
-            type: "material-community",
-            name: "google-maps",
-            color: "#c2c2c2",
-            onPress: () => console.log("Seleccione la ubicación")
-          }}
-          containerStyle={styles.input}
-          onChange={() => console.log("Direccion actualizada.")}
-        />
-        <Input
-          placeholder="País"
-          containerStyle={styles.input}
-          onChange={() => console.log("Nombre del evento actualizado")}
-        />
-        <Input
-          placeholder="Municipio"
-          containerStyle={styles.input}
-          onChange={() => console.log("Nombre del evento actualizado")}
-        />
-        <Input
-          placeholder="Calle"
-          containerStyle={styles.input}
-          onChange={() => console.log("Nombre del evento actualizado")}
-        />
-        <Input
-          placeholder="Código Postal"
-          containerStyle={styles.input}
-          onChange={() => console.log("Nombre del evento actualizado")}
-        />
-        <CheckBox
-          center
-          title="Recogida de basura"
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          checked={true}
-        />
-        <CheckBox
-          center
-          title="Charla"
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          checked={true}
-        />
-        <CheckBox
-          center
-          title="Manifestación"
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          checked={true}
-        />
-        <CheckBox
-          center
-          title="Taller"
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          checked={true}
-        />
-      </Card>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   viewPhoto: {
     alignItems: "center",
     height: 200,
     marginBottom: 0
+  },
+  viewBtn: {
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 15,
+    marginBottom: 15
   },
   viewImage: {
     flexDirection: "row",
@@ -229,13 +429,30 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 30
   },
+  viewMapBtn: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10
+  },
+  viewMapBtnContainerSave: {
+    paddingRight: 5
+  },
+  viewMapBtnContainerCancel: {
+    paddingLeft: 5
+  },
+  viewMapBtnSave: {
+    backgroundColor: "#2BA418"
+  },
+  viewMapBtnCancel: {
+    backgroundColor: "#b2b2b2"
+  },
   containerIcon: {
     alignItems: "center",
     justifyContent: "center",
     marginRight: 5,
     height: 70,
     width: 70,
-    backgroundColor: "#e3e3e3"
+    backgroundColor: "#d0d0d0"
   },
   miniatureStyle: {
     width: 70,
@@ -245,8 +462,7 @@ const styles = StyleSheet.create({
   },
   viewForm: {
     marginLeft: 5,
-    marginRight: 5,
-    marginBottom: 10
+    marginRight: 5
   },
   input: {
     marginBottom: 10
@@ -256,5 +472,34 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 0,
     margin: 0
+  },
+  txtHeadline: {
+    textAlign: "center",
+    color: "#2BA418"
+  },
+  btnCreateEvent: {
+    backgroundColor: "#2BA418",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#fff",
+    marginBottom: 15,
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15
+  },
+  btnDate: {
+    backgroundColor: "#b2b2b2",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#e7e7e7",
+    marginBottom: 10
+  },
+  pickEventType: {
+    height: 50,
+    width: "100%"
+  },
+  mapStyle: {
+    width: "100%",
+    height: "90%"
   }
 });

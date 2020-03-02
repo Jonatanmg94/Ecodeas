@@ -6,13 +6,27 @@ const EventScreenStacks = createStackNavigator({
   Events: {
     screen: EventsScreen,
     navigationOptions: () => ({
-      title: "Eventos"
+      title: "Eventos",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   },
   AddEvent: {
     screen: AddEventScreen,
     navigationOptions: () => ({
-      title: "Nuevo Evento"
+      title: "Nuevo Evento",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   }
 });

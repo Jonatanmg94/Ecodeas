@@ -1,11 +1,18 @@
 import { createStackNavigator } from "react-navigation-stack";
-import PostScreen from "../screens/Posts";
+import PostScreen from "../screens/Posts/Posts";
 
 const PostScreenStacks = createStackNavigator({
-  Restaurants: {
+  Posts: {
     screen: PostScreen,
     navigationOptions: () => ({
-      title: "Publicaciones"
+      title: "Publicaciones",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   }
 });

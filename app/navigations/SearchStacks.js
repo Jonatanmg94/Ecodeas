@@ -5,7 +5,14 @@ const SearchScreenStacks = createStackNavigator({
   TopRestaurants: {
     screen: SearchScreen,
     navigationOptions: () => ({
-      title: "Búsquedas"
+      title: "Búsquedas",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
     })
   }
 });
