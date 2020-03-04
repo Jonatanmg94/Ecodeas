@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 import {
   StyleSheet,
   View,
   ScrollView,
   Alert,
   Dimensions,
+  TouchableOpacity,
   Picker
 } from "react-native";
 import {
@@ -23,8 +24,13 @@ import * as Permissions from "expo-permissions";
 import MapView, { Marker } from "react-native-maps";
 import Modal from "../Modal";
 import * as Location from "expo-location";
-import moment from "moment";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import Moment from "moment";
+import DatePicker from "react-native-datepicker";
+import uuid, { v4 as uuidv4 } from "uuid";
+import { firebaseApp } from "../../utils/Firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+const db = firebase.firestore(firebaseApp);
 
 const widthScreen = Dimensions.get("window").width;
 
@@ -33,8 +39,12 @@ export default function AddEventForm(props) {
   const [imagesSelected, setImagesSelected] = useState([]);
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
-  const [eventDateInit, setEventDateInit] = useState("");
-  const [eventDateFin, setEventDateFin] = useState("");
+  const [eventDateInit, setEventDateInit] = useState(
+    Moment(new Date()).format("YYYY-MM-DD hh:mm:ss")
+  );
+  const [eventDateFin, setEventDateFin] = useState(
+    Moment(new Date()).format("YYYY-MM-DD hh:mm:ss")
+  );
   const [eventType, setEventType] = useState("");
   const [eventStatus, setEventStatus] = useState("");
   const [eventCapacity, setEventCapacity] = useState("");
@@ -44,6 +54,29 @@ export default function AddEventForm(props) {
   const [eventState, setEventState] = useState("");
   const [eventStreet, setEventStreet] = useState("");
   const [eventPostalCode, setEventPostalCode] = useState("");
+
+  const optionsv4 = () => {
+    uuidv4Options = uuidv4({
+      random: [
+        Math.floor(Math.random() * 100) + 1,
+        Math.floor(Math.random() * 150) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 150) + 1,
+        Math.floor(Math.random() * 100) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 256) + 1,
+        Math.floor(Math.random() * 150) + 1
+      ]
+    });
+  };
 
   const addEvent = () => {
     if (
@@ -70,8 +103,8 @@ export default function AddEventForm(props) {
     } else if (!eventDateInit || !eventDateFin) {
       toastRef.current.show("Debes establecer las dos fechas del evento", 3000);
     } else {
-      setIsLoading(true);
-      console.log("todo correcto");
+      setIsLoading(false);
+      uploadImagesStorage(imagesSelected);
     }
   };
 
@@ -87,6 +120,23 @@ export default function AddEventForm(props) {
     console.log("eventdateInit " + eventDateInit);
     console.log("eventdateFin " + eventDateFin);
     console.log("eventype " + eventType);
+  };
+
+  const uploadImagesStorage = async imageArray => {
+    const imagesBlob = [];
+    await Promise.all(
+      imageArray.map(async image => {
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const ref = firebase
+          .storage()
+          .ref("events-images")
+          .child(uuidv4());
+        await ref.put(blob).then(result => {
+          console.log(result);
+        });
+      })
+    );
   };
 
   return (
@@ -122,6 +172,39 @@ export default function AddEventForm(props) {
         setIsVisibleMap={setIsVisibleMap}
         setEventLocation={setEventLocation}
         toastRef={toastRef}
+      />
+      <Button
+        title="TesteoVariables"
+        onPress={testeoVariables}
+        buttonStyle={styles.btnCreateEvent}
+      />
+      <Button
+        title="Ver random"
+        onPress={() =>
+          console.log(
+            uuidv4({
+              random: [
+                Math.floor(Math.random() * 100) + 1,
+                Math.floor(Math.random() * 150) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 150) + 1,
+                Math.floor(Math.random() * 100) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 256) + 1,
+                Math.floor(Math.random() * 150) + 1
+              ]
+            })
+          )
+        }
+        buttonStyle={styles.btnCreateEvent}
       />
       <Button
         title="Crear nuevo evento"
@@ -200,23 +283,78 @@ function FormAdd(props) {
             maxLength={1000000}
             onChange={e => setEventCapacity(e.nativeEvent.text)}
           />
+          <Text style={styles.txtDateSelect}>Fecha inicial</Text>
+          <DatePicker
+            style={{ width: "100%" }}
+            date={eventDateInit}
+            mode="date"
+            placeholder="Selecciona fecha inicial"
+            format="YYYY-MM-DD hh:mn:ss"
+            minDate="2016-05-01"
+            maxDate="2030-06-01"
+            confirmBtnText="Confirmar"
+            cancelBtnText="Cancelar"
+            customStyles={{
+              dateIcon: {
+                position: "absolute",
+                left: 0,
+                top: 4,
+                marginLeft: 0
+              },
+              dateInput: {
+                marginLeft: 36
+              }
+              // ... You can check the source to find the other keys.
+            }}
+            onDateChange={date => setEventDateInit(date)}
+          />
+          <Text style={styles.txtDateSelect}>Fecha final</Text>
+          <DatePicker
+            style={{ width: "100%" }}
+            date={eventDateFin}
+            mode="date"
+            placeholder="Selecciona fecha final"
+            format="YYYY-MM-DD hh:mn:ss"
+            minDate="2016-05-01"
+            maxDate="2030-06-01"
+            confirmBtnText="Confirmar"
+            cancelBtnText="Cancelar"
+            customStyles={{
+              dateIcon: {
+                position: "absolute",
+                left: 0,
+                top: 4,
+                marginLeft: 0
+              },
+              dateInput: {
+                marginLeft: 36
+              }
+            }}
+            onDateChange={date => setEventDateFin(date)}
+          />
         </View>
       </Card>
       <Card>
         <Text style={styles.txtHeadline} h4>
           Ubicación
         </Text>
-        <Input
-          placeholder="Ubicación en el mapa"
-          rightIcon={{
-            type: "material-community",
-            name: "google-maps",
-            color: eventLocation ? "#2BA418" : "#c2c2c2",
-            onPress: () => setIsVisibleMap(true)
-          }}
-          containerStyle={styles.input}
-          onChange={e => setEventLocation(e.nativeEvent.text)}
-        />
+        <TouchableOpacity onPress={() => setIsVisibleMap(true)}>
+          <Input
+            placeholder={
+              eventLocation ? "Ubicación seleccionada" : "Seleccione ubicación"
+            }
+            placeholderTextColor={eventLocation ? "#2BA418" : "#000000"}
+            disabled={true}
+            rightIcon={{
+              type: "material-community",
+              name: "google-maps",
+              color: eventLocation ? "#2BA418" : "#c2c2c2",
+              onPress: () => setIsVisibleMap(true)
+            }}
+            containerStyle={styles.input}
+            onChange={e => setEventLocation(e.nativeEvent.text)}
+          />
+        </TouchableOpacity>
         <Input
           placeholder="País"
           containerStyle={styles.input}
@@ -235,6 +373,7 @@ function FormAdd(props) {
         <Input
           placeholder="Código Postal"
           containerStyle={styles.input}
+          keyboardType="numeric"
           onChange={e => setEventPostalCode(e.nativeEvent.text)}
         />
       </Card>
@@ -467,6 +606,9 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 10
   },
+  inputMapDisabled: {
+    color: "red"
+  },
   textArea: {
     height: 100,
     width: "100%",
@@ -476,6 +618,10 @@ const styles = StyleSheet.create({
   txtHeadline: {
     textAlign: "center",
     color: "#2BA418"
+  },
+  txtDateSelect: {
+    marginBottom: 10,
+    marginTop: 10
   },
   btnCreateEvent: {
     backgroundColor: "#2BA418",
