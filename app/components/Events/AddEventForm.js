@@ -26,10 +26,10 @@ import Modal from "../Modal";
 import * as Location from "expo-location";
 import Moment from "moment";
 import DatePicker from "react-native-datepicker";
-import uuid, { v4 as uuidv4 } from "uuid";
 import { firebaseApp } from "../../utils/Firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 const db = firebase.firestore(firebaseApp);
 
 const widthScreen = Dimensions.get("window").width;
@@ -54,29 +54,6 @@ export default function AddEventForm(props) {
   const [eventState, setEventState] = useState("");
   const [eventStreet, setEventStreet] = useState("");
   const [eventPostalCode, setEventPostalCode] = useState("");
-
-  const optionsv4 = () => {
-    uuidv4Options = uuidv4({
-      random: [
-        Math.floor(Math.random() * 100) + 1,
-        Math.floor(Math.random() * 150) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 150) + 1,
-        Math.floor(Math.random() * 100) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 256) + 1,
-        Math.floor(Math.random() * 150) + 1
-      ]
-    });
-  };
 
   const addEvent = () => {
     if (
@@ -124,6 +101,7 @@ export default function AddEventForm(props) {
 
   const uploadImagesStorage = async imageArray => {
     const imagesBlob = [];
+
     await Promise.all(
       imageArray.map(async image => {
         const response = await fetch(image);
@@ -180,30 +158,7 @@ export default function AddEventForm(props) {
       />
       <Button
         title="Ver random"
-        onPress={() =>
-          console.log(
-            uuidv4({
-              random: [
-                Math.floor(Math.random() * 100) + 1,
-                Math.floor(Math.random() * 150) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 150) + 1,
-                Math.floor(Math.random() * 100) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 256) + 1,
-                Math.floor(Math.random() * 150) + 1
-              ]
-            })
-          )
-        }
+        onPress={() => console.log(uuidv4())}
         buttonStyle={styles.btnCreateEvent}
       />
       <Button

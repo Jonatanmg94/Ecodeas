@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 2341,
-  "expoServerNgrokUrl": "https://bc-6jq.anonymous.ecodeas.exp.direct",
-  "packagerNgrokUrl": "https://packager.bc-6jq.anonymous.ecodeas.exp.direct",
-  "ngrokPid": 2351,
+  "packagerPid": 4360,
+  "expoServerNgrokUrl": "https://bc-6jq.jonatanmgdev.ecodeas.exp.direct",
+  "packagerNgrokUrl": "https://packager.bc-6jq.jonatanmgdev.ecodeas.exp.direct",
+  "ngrokPid": 4377,
   "webpackServerPort": null
 }
