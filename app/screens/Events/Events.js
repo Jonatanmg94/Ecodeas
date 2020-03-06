@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import ActionButton from "react-native-action-button";
 import * as firebase from "firebase";
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -19,56 +19,69 @@ export default function Events(props) {
     <View style={styles.viewBody}>
       <Grid>
         <Col>
-          <Card>
-            <Image
-              source={require("../../../assets/img/reciclaje.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Recogida de basura</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/charlas.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Charlas</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/manifestacion.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Manifestaciones</Text>
-          </Card>
+          <TouchableOpacity onPress={() => console.log("RECOGIDAS")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/reciclaje.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Recogida de basura</Text>
+            </Card>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => console.log("CHARLAS")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/charlas.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Charlas</Text>
+            </Card>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => console.log("MANIFESTACIONES")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/manifestacion.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Manifestaciones</Text>
+            </Card>
+          </TouchableOpacity>
         </Col>
         <Col>
-          <Card>
-            <Image
-              source={require("../../../assets/img/talleres.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Talleres</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/ferias.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Ferias</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/reforestar.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Reforestaciones</Text>
-          </Card>
+          <TouchableOpacity onPress={() => console.log("TALLERES")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/talleres.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Talleres</Text>
+            </Card>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => console.log("FERIAS")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/ferias.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Ferias</Text>
+            </Card>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => console.log("REFORESTACIONES")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/reforestar.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Reforestaciones</Text>
+            </Card>
+          </TouchableOpacity>
         </Col>
       </Grid>
       {user && <AddEventButton navigation={navigation} />}

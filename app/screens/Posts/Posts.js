@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Card } from "react-native-elements";
 
@@ -8,56 +8,70 @@ export default function Posts() {
     <View style={styles.viewBody}>
       <Grid>
         <Col>
-          <Card>
-            <Image
-              source={require("../../../assets/img/madera.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Maderas</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/metales.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Metales</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/plastico.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Plásticos</Text>
-          </Card>
+          <TouchableOpacity onPress={() => console.log("MADERAS")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/madera.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Maderas</Text>
+            </Card>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => console.log("METALES")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/metales.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Metales</Text>
+            </Card>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => console.log("PLASTICOS")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/plastico.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Plásticos</Text>
+            </Card>
+          </TouchableOpacity>
         </Col>
         <Col>
-          <Card>
-            <Image
-              source={require("../../../assets/img/textil.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Textiles</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/papel.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Papeles</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/cristal.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>Vidrios</Text>
-          </Card>
+          <TouchableOpacity onPress={() => console.log("TEXTILES")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/textil.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Textiles</Text>
+            </Card>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => console.log("PAPELES")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/papel.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Papeles</Text>
+            </Card>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => console.log("VIDRIOS")}>
+            <Card>
+              <Image
+                source={require("../../../assets/img/cristal.png")}
+                style={styles.image}
+                resizeMode="contain"
+              />
+              <Text style={styles.txtGridTitles}>Vidrios</Text>
+            </Card>
+          </TouchableOpacity>
         </Col>
       </Grid>
     </View>

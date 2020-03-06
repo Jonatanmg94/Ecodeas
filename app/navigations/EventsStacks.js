@@ -1,5 +1,6 @@
 import { createStackNavigator } from "react-navigation-stack";
 import EventsScreen from "../screens/Events/Events";
+import ListEventsScreen from "../screens/Events/listEvents";
 import AddEventScreen from "../screens/Events/addEvent";
 
 const EventScreenStacks = createStackNavigator({
@@ -20,6 +21,19 @@ const EventScreenStacks = createStackNavigator({
     screen: AddEventScreen,
     navigationOptions: () => ({
       title: "Nuevo Evento",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    })
+  },
+  ListEvents: {
+    screen: ListEventsScreen,
+    navigationOptions: () => ({
+      title: "Lista de eventos",
       headerTintColor: "white",
       headerStyle: {
         backgroundColor: "#2BA418"

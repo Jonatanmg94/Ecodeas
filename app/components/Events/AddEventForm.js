@@ -26,10 +26,10 @@ import Modal from "../Modal";
 import * as Location from "expo-location";
 import Moment from "moment";
 import DatePicker from "react-native-datepicker";
+import uuid from "uuid/v4";
 import { firebaseApp } from "../../utils/Firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
 const db = firebase.firestore(firebaseApp);
 
 const widthScreen = Dimensions.get("window").width;
@@ -45,8 +45,8 @@ export default function AddEventForm(props) {
   const [eventDateFin, setEventDateFin] = useState(
     Moment(new Date()).format("YYYY-MM-DD hh:mm:ss")
   );
-  const [eventType, setEventType] = useState("");
-  const [eventStatus, setEventStatus] = useState("");
+  const [eventType, setEventType] = useState("recogidas");
+  const [eventStatus, setEventStatus] = useState("approbed");
   const [eventCapacity, setEventCapacity] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [isVisibleMap, setIsVisibleMap] = useState(false);
@@ -80,8 +80,41 @@ export default function AddEventForm(props) {
     } else if (!eventDateInit || !eventDateFin) {
       toastRef.current.show("Debes establecer las dos fechas del evento", 3000);
     } else {
-      setIsLoading(false);
-      uploadImagesStorage(imagesSelected);
+      setIsLoading(true);
+      uploadImagesStorage(imagesSelected).then(arrayImages => {
+        db.collection("events")
+          .add({
+            name: eventName,
+            description: eventDescription,
+            location: eventLocation,
+            country: eventCountry,
+            state: eventState,
+            street: eventStreet,
+            zipCode: eventPostalCode,
+            dateInit: eventDateInit,
+            dateFin: eventDateFin,
+            type: eventType,
+            status: eventStatus,
+            capacity: eventCapacity,
+            images: arrayImages,
+            rating: 0,
+            ratingTotal: 0,
+            quantityVoting: 0,
+            createAt: new Date(),
+            createdBy: firebaseApp.auth().currentUser.uid
+          })
+          .then(() => {
+            setIsLoading(false);
+            navigation.navigate("Events");
+          })
+          .catch(error => {
+            setIsLoading(false);
+            toastRef.current.show(
+              "Error al subir el evento, intentelo más tarde"
+            );
+            console.log(error);
+          });
+      });
     }
   };
 
@@ -101,7 +134,6 @@ export default function AddEventForm(props) {
 
   const uploadImagesStorage = async imageArray => {
     const imagesBlob = [];
-
     await Promise.all(
       imageArray.map(async image => {
         const response = await fetch(image);
@@ -109,12 +141,13 @@ export default function AddEventForm(props) {
         const ref = firebase
           .storage()
           .ref("events-images")
-          .child(uuidv4());
+          .child(uuid());
         await ref.put(blob).then(result => {
-          console.log(result);
+          imagesBlob.push(result.metadata.name);
         });
       })
     );
+    return imagesBlob;
   };
 
   return (
@@ -150,16 +183,6 @@ export default function AddEventForm(props) {
         setIsVisibleMap={setIsVisibleMap}
         setEventLocation={setEventLocation}
         toastRef={toastRef}
-      />
-      <Button
-        title="TesteoVariables"
-        onPress={testeoVariables}
-        buttonStyle={styles.btnCreateEvent}
-      />
-      <Button
-        title="Ver random"
-        onPress={() => console.log(uuidv4())}
-        buttonStyle={styles.btnCreateEvent}
       />
       <Button
         title="Crear nuevo evento"
@@ -221,7 +244,7 @@ function FormAdd(props) {
             mode={"dropdown"}
             selectedValue={eventType == null ? "java" : eventType}
             style={styles.pickEventType}
-            onValueChange={(itemValue, itemIndex) => setEventType(itemValue)}
+            onValueChange={itemValue => setEventType(itemValue)}
           >
             <Picker.Item label="Recogida de basura" value="recogidas" />
             <Picker.Item label="Talleres" value="talleres" />
@@ -244,7 +267,7 @@ function FormAdd(props) {
             date={eventDateInit}
             mode="date"
             placeholder="Selecciona fecha inicial"
-            format="YYYY-MM-DD hh:mn:ss"
+            format="YYYY-MM-DD hh:mm:ss"
             minDate="2016-05-01"
             maxDate="2030-06-01"
             confirmBtnText="Confirmar"
@@ -269,7 +292,7 @@ function FormAdd(props) {
             date={eventDateFin}
             mode="date"
             placeholder="Selecciona fecha final"
-            format="YYYY-MM-DD hh:mn:ss"
+            format="YYYY-MM-DD hh:mm:ss"
             minDate="2016-05-01"
             maxDate="2030-06-01"
             confirmBtnText="Confirmar"
