@@ -19,7 +19,13 @@ export default function Events(props) {
     <View style={styles.viewBody}>
       <Grid>
         <Col>
-          <TouchableOpacity onPress={() => console.log("RECOGIDAS")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListEvents", {
+                eventsCategory: "recogidas"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/reciclaje.png")}
@@ -29,7 +35,13 @@ export default function Events(props) {
               <Text style={styles.txtGridTitles}>Recogida de basura</Text>
             </Card>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => console.log("CHARLAS")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListEvents", {
+                eventsCategory: "charlas"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/charlas.png")}
@@ -39,7 +51,13 @@ export default function Events(props) {
               <Text style={styles.txtGridTitles}>Charlas</Text>
             </Card>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => console.log("MANIFESTACIONES")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListEvents", {
+                eventsCategory: "manifestaciones"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/manifestacion.png")}
@@ -51,7 +69,13 @@ export default function Events(props) {
           </TouchableOpacity>
         </Col>
         <Col>
-          <TouchableOpacity onPress={() => console.log("TALLERES")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListEvents", {
+                eventsCategory: "talleres"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/talleres.png")}
@@ -61,7 +85,13 @@ export default function Events(props) {
               <Text style={styles.txtGridTitles}>Talleres</Text>
             </Card>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => console.log("FERIAS")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListEvents", {
+                eventsCategory: "ferias"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/ferias.png")}
@@ -72,7 +102,13 @@ export default function Events(props) {
             </Card>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => console.log("REFORESTACIONES")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListEvents", {
+                eventsCategory: "reforestaciones"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/reforestar.png")}

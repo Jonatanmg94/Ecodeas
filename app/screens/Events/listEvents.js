@@ -1,13 +1,22 @@
 import React, { useState, useEffect, Component } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
-import ActionButton from "react-native-action-button";
-import * as firebase from "firebase";
-import { Col, Row, Grid } from "react-native-easy-grid";
+import { View, Text, StyleSheet, Image, Button } from "react-native";
 import { Card } from "react-native-elements";
+import ListEventsTemplate from "../../components/Events/listEventsTemplate";
+import { firebaseApp } from "../../utils/Firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+const db = firebase.firestore(firebaseApp);
 
 export default function listEvents(props) {
   const { navigation } = props;
+  const { params } = navigation.state;
+  const eventsCategory = params ? params.eventsCategory : null;
   const [user, setUser] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [starEvents, setStarEvents] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalEvents, setTotalEvents] = useState(0);
+  const limitEvents = 8;
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(userInfo => {
@@ -15,49 +24,64 @@ export default function listEvents(props) {
     });
   }, []);
 
+  useEffect(() => {
+    db.collection("events")
+      .where("type", "==", eventsCategory)
+      .get()
+      .then(snap => {
+        setTotalEvents(snap.size);
+      });
+    (async () => {
+      const resultEvents = [];
+      const events = db
+        .collection("events")
+        .where("type", "==", eventsCategory)
+        .limit(limitEvents);
+      await events.get().then(response => {
+        setStarEvents(response.docs[response.docs.length - 1]);
+        response.forEach(doc => {
+          let event = doc.data();
+          event.id = doc.id;
+          resultEvents.push({ event });
+        });
+        setEvents(resultEvents);
+      });
+    })();
+  }, []);
+
+  const handleLoadMore = async () => {
+    const resultEvents = [];
+    events.length < totalEvents && setIsLoading(true);
+    const eventsDb = db
+      .collection("events")
+      .where("type", "==", eventsCategory)
+      .startAfter(starEvents.data().createAt)
+      .limit(limitEvents);
+
+    await eventsDb.get().then(response => {
+      if (response.docs.length > 0) {
+        setStarEvents(response.docs[response.docs.length - 1]);
+      } else {
+        setIsLoading(false);
+      }
+      response.forEach(doc => {
+        let event = doc.data();
+        event.id = doc.id;
+        resultEvents.push({ event });
+      });
+
+      setEvents([...events, ...resultEvents]);
+    });
+  };
+
   return (
     <View style={styles.viewBody}>
-      <Grid>
-        <Col>
-          <Card>
-            <Image
-              source={require("../../../assets/img/reciclaje.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>mierda</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/charlas.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>mierda</Text>
-          </Card>
-          <Card>
-            <Image
-              source={require("../../../assets/img/manifestacion.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtGridTitles}>mierda</Text>
-          </Card>
-        </Col>
-      </Grid>
-      {user && <AddEventButton navigation={navigation} />}
+      <ListEventsTemplate
+        events={events}
+        isLoading={isLoading}
+        handleLoadMore={handleLoadMore}
+      />
     </View>
-  );
-}
-
-function AddEventButton(props) {
-  const { navigation } = props;
-  return (
-    <ActionButton
-      active={true}
-      buttonColor="rgba(43, 164, 24, 1)"
-      onPress={() => navigation.navigate("AddEvent")}
-    />
   );
 }
 

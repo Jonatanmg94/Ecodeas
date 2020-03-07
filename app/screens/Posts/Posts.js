@@ -3,12 +3,20 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Card } from "react-native-elements";
 
-export default function Posts() {
+export default function Posts(props) {
+  const { navigation } = props;
+
   return (
     <View style={styles.viewBody}>
       <Grid>
         <Col>
-          <TouchableOpacity onPress={() => console.log("MADERAS")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListPosts", {
+                postsCategory: "maderas"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/madera.png")}
@@ -19,7 +27,13 @@ export default function Posts() {
             </Card>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => console.log("METALES")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListPosts", {
+                postsCategory: "metales"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/metales.png")}
@@ -29,7 +43,13 @@ export default function Posts() {
               <Text style={styles.txtGridTitles}>Metales</Text>
             </Card>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => console.log("PLASTICOS")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListPosts", {
+                postsCategory: "plasticos"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/plastico.png")}
@@ -41,7 +61,13 @@ export default function Posts() {
           </TouchableOpacity>
         </Col>
         <Col>
-          <TouchableOpacity onPress={() => console.log("TEXTILES")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListPosts", {
+                postsCategory: "textiles"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/textil.png")}
@@ -51,7 +77,13 @@ export default function Posts() {
               <Text style={styles.txtGridTitles}>Textiles</Text>
             </Card>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => console.log("PAPELES")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListPosts", {
+                postsCategory: "papeles"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/papel.png")}
@@ -62,7 +94,13 @@ export default function Posts() {
             </Card>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => console.log("VIDRIOS")}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ListPosts", {
+                postsCategory: "vidrios"
+              });
+            }}
+          >
             <Card>
               <Image
                 source={require("../../../assets/img/cristal.png")}
