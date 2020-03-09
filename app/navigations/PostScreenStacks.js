@@ -1,12 +1,40 @@
 import { createStackNavigator } from "react-navigation-stack";
-import PostScreen from "../screens/Posts/Posts";
+import PostsScreen from "../screens/Posts/Posts";
 import ListPostScreen from "../screens/Posts/listPosts";
+import AddPostScreen from "../screens/Posts/addPost";
+import PostScreen from "../screens/Posts/Post";
 
 const PostScreenStacks = createStackNavigator({
   Posts: {
+    screen: PostsScreen,
+    navigationOptions: () => ({
+      title: "Posts",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    })
+  },
+  Post: {
     screen: PostScreen,
     navigationOptions: () => ({
-      title: "Publicaciones",
+      title: "Ficha del post",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    })
+  },
+  AddPost: {
+    screen: AddPostScreen,
+    navigationOptions: () => ({
+      title: "Añadir post",
       headerTintColor: "white",
       headerStyle: {
         backgroundColor: "#2BA418"

@@ -11,18 +11,17 @@ import {
 import { Image, Icon, Card } from "react-native-elements";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import * as firebase from "firebase";
-import moment from "moment";
 
-export default function ListEventsTemplate(props) {
+export default function ListPostsTemplate(props) {
   YellowBox.ignoreWarnings(["Setting a timer"]);
-  const { events, isLoading, handleLoadMore, navigation } = props;
+  const { posts, isLoading, handleLoadMore, navigation } = props;
 
   return (
     <View>
-      {events ? (
+      {posts ? (
         <FlatList
-          data={events}
-          renderItem={event => <Event event={event} navigation={navigation} />}
+          data={posts}
+          renderItem={post => <Post post={post} navigation={navigation} />}
           keyExtractor={(item, index) => index.toString()}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
@@ -31,31 +30,31 @@ export default function ListEventsTemplate(props) {
       ) : (
         <View style={styles.loadingEvents}>
           <ActivityIndicator size="large" />
-          <Text>Cargando eventos...</Text>
+          <Text>Cargando posts...</Text>
         </View>
       )}
     </View>
   );
 }
 
-function Event(props) {
-  const { event, navigation } = props;
-  const { name, description, images, dateInit, type } = event.item.event;
-  const [imageEvent, setImageEvent] = useState(null);
+function Post(props) {
+  const { post, navigation } = props;
+  const { name, description, images } = post.item.post;
+  const [imagePost, setImagePost] = useState(null);
 
   useEffect(() => {
     const image = images[0];
     firebase
       .storage()
-      .ref(`events-images/${image}`)
+      .ref(`posts-images/${image}`)
       .getDownloadURL()
       .then(result => {
-        setImageEvent(result);
+        setImagePost(result);
       });
   });
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Event", { event })}>
+    <TouchableOpacity onPress={() => navigation.navigate("Post", { post })}>
       <View style={styles.viewEvent}>
         <Card>
           <Grid>
@@ -63,7 +62,7 @@ function Event(props) {
               <View style={styles.viewEventImage}>
                 <Image
                   resizeMode="cover"
-                  source={{ uri: imageEvent }}
+                  source={{ uri: imagePost }}
                   style={styles.imageEvent}
                   PlaceholderContent={<ActivityIndicator color="#ƒƒffff" />}
                 />
@@ -74,19 +73,6 @@ function Event(props) {
                 <Row>
                   <View style={styles.viewEventTitle}>
                     <Text style={styles.eventName}>{name.toUpperCase()}</Text>
-                  </View>
-                </Row>
-                <Row>
-                  <View style={styles.viewEventContent}>
-                    <View style={styles.viewUbication}>
-                      <Icon
-                        name="calendar"
-                        type="font-awesome"
-                        color="#2BA418"
-                        size={20}
-                      />
-                    </View>
-                    <Text style={styles.eventName}>{dateInit}</Text>
                   </View>
                 </Row>
                 <Row>

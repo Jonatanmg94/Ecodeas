@@ -40,10 +40,10 @@ export default function AddEventForm(props) {
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventDateInit, setEventDateInit] = useState(
-    Moment(new Date()).format("YYYY-MM-DD hh:mm:ss")
+    Moment(new Date()).format("DD-MM-YYYY")
   );
   const [eventDateFin, setEventDateFin] = useState(
-    Moment(new Date()).format("YYYY-MM-DD hh:mm:ss")
+    Moment(new Date()).format("DD-MM-YYYY")
   );
   const [eventType, setEventType] = useState("recogidas");
   const [eventStatus, setEventStatus] = useState("approbed");
@@ -223,11 +223,13 @@ function FormAdd(props) {
             Información
           </Text>
           <Input
+            maxLength={70}
             placeholder="Nombre del evento"
             containerStyle={styles.input}
             onChange={e => setEventName(e.nativeEvent.text)}
           />
           <Input
+            maxLength={500}
             placeholder="Descripción"
             containerStyle={styles.textArea}
             multiline={true}
@@ -255,6 +257,7 @@ function FormAdd(props) {
           </Picker>
           <Divider style={{ backgroundColor: "grey", height: 1 }} />
           <Input
+            maxLength={10}
             placeholder="Aforo del evento"
             containerStyle={styles.input}
             keyboardType="numeric"
@@ -267,9 +270,9 @@ function FormAdd(props) {
             date={eventDateInit}
             mode="date"
             placeholder="Selecciona fecha inicial"
-            format="YYYY-MM-DD hh:mm:ss"
-            minDate="2016-05-01"
-            maxDate="2030-06-01"
+            format="DD-MM-YYYY"
+            minDate="01-05-2020"
+            maxDate="31-12-2100"
             confirmBtnText="Confirmar"
             cancelBtnText="Cancelar"
             customStyles={{
@@ -292,9 +295,9 @@ function FormAdd(props) {
             date={eventDateFin}
             mode="date"
             placeholder="Selecciona fecha final"
-            format="YYYY-MM-DD hh:mm:ss"
-            minDate="2016-05-01"
-            maxDate="2030-06-01"
+            format="DD-MM-YYYY"
+            minDate="01-05-2020"
+            maxDate="31-12-2100"
             confirmBtnText="Confirmar"
             cancelBtnText="Cancelar"
             customStyles={{
@@ -334,21 +337,25 @@ function FormAdd(props) {
           />
         </TouchableOpacity>
         <Input
+          maxLength={30}
           placeholder="País"
           containerStyle={styles.input}
           onChange={e => setEventCountry(e.nativeEvent.text)}
         />
         <Input
+          maxLength={30}
           placeholder="Municipio"
           containerStyle={styles.input}
           onChange={e => setEventState(e.nativeEvent.text)}
         />
         <Input
+          maxLength={30}
           placeholder="Calle"
           containerStyle={styles.input}
           onChange={e => setEventStreet(e.nativeEvent.text)}
         />
         <Input
+          maxLength={6}
           placeholder="Código Postal"
           containerStyle={styles.input}
           keyboardType="numeric"

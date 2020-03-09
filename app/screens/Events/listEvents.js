@@ -80,6 +80,7 @@ export default function listEvents(props) {
         events={events}
         isLoading={isLoading}
         handleLoadMore={handleLoadMore}
+        navigation={navigation}
       />
     </View>
   );

@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import ActionButton from "react-native-action-button";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Card } from "react-native-elements";
+import * as firebase from "firebase";
 
 export default function Posts(props) {
   const { navigation } = props;
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(userInfo => {
+      setUser(userInfo);
+    });
+  }, []);
 
   return (
     <View style={styles.viewBody}>
@@ -13,7 +23,7 @@ export default function Posts(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListPosts", {
-                postsCategory: "maderas"
+                postsCategory: "postTypeWood"
               });
             }}
           >
@@ -112,7 +122,19 @@ export default function Posts(props) {
           </TouchableOpacity>
         </Col>
       </Grid>
+      {user && <AddEventButton navigation={navigation} />}
     </View>
+  );
+}
+
+function AddEventButton(props) {
+  const { navigation } = props;
+  return (
+    <ActionButton
+      active={true}
+      buttonColor="rgba(43, 164, 24, 1)"
+      onPress={() => navigation.navigate("AddPost")}
+    />
   );
 }
 
