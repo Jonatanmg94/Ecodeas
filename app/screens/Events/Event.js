@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, ScrollView, Text, Dimensions } from "react-native";
 import { Rating, Card, Icon, ListItem } from "react-native-elements";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Carousel from "../../components/Carousel";
 import Map from "../../components/Map";
 import moment from "moment";
-import * as firebase from "firebase";
+import ListReviews from "../../components/Events/ListReviews";
+import Toast from "react-native-easy-toast";
+import { firebaseApp } from "../../utils/Firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+const db = firebase.firestore(firebaseApp);
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function Event(props) {
   const { navigation } = props;
-  const { event } = navigation.state.params.event.item;
+  const { event } = navigation.state.params;
   const [imagesEvent, setImagesEvent] = useState([]);
-
+  const [rating, setRating] = useState(event.rating);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const toastRef = useRef();
   useEffect(() => {
     const arrayUrls = [];
     (async () => {
@@ -32,13 +39,82 @@ export default function Event(props) {
     })();
   }, []);
 
+  useEffect(() => {
+    db.collection("events-favorites")
+      .where("idEvent", "==", event.id)
+      .where("idUser", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(response => {
+        if (response.docs.length === 1) {
+          setIsFavorite(true);
+        }
+      });
+  }, []);
+
+  const addFavorite = () => {
+    const payload = {
+      idUser: firebase.auth().currentUser.uid,
+      idEvent: event.id
+    };
+    db.collection("events-favorites")
+      .add(payload)
+      .then(() => {
+        setIsFavorite(true);
+        toastRef.current.show("Evento añadido a la lista de favoritos", 3000);
+      })
+      .catch(() => {
+        toastRef.current.show(
+          "No se ha podido añadir a la lista de favoritos",
+          3000
+        );
+      });
+  };
+
+  const removeFavorite = () => {
+    db.collection("events-favorites")
+      .where("idEvent", "==", event.id)
+      .where("idUser", "==", firebase.auth().currentUser.uid)
+      .get()
+      .then(response => {
+        response.forEach(doc => {
+          const idFavorite = doc.id;
+          db.collection("events-favorites")
+            .doc(idFavorite)
+            .delete()
+            .then(() => {
+              setIsFavorite(false);
+              toastRef.current.show(
+                "Evento eliminado de la lista de favoritos",
+                3000
+              );
+            })
+            .catch(() => {
+              toastRef.current.show(
+                "No se ha podido eliminar el evento de favoritos",
+                3000
+              );
+            });
+        });
+      });
+  };
+
   return (
     <ScrollView style={styles.viewBody}>
+      <View style={styles.viewFavorite}>
+        <Icon
+          type="material-community"
+          name={isFavorite ? "heart" : "heart-outline"}
+          onPress={isFavorite ? removeFavorite : addFavorite}
+          color={isFavorite ? "red" : "grey"}
+          size={35}
+          underlayColor="transparent"
+        />
+      </View>
       <Carousel arrayImages={imagesEvent} width={screenWidth} height={200} />
       <TitleEvent
         name={event.name}
         description={event.description}
-        rating={event.rating}
+        rating={rating}
         createAt={event.createAt}
       />
       <EventInfo
@@ -52,6 +128,12 @@ export default function Event(props) {
         dateFin={event.dateFin}
         capacity={event.capacity}
       />
+      <ListReviews
+        navigation={navigation}
+        idEvent={event.id}
+        setRating={setRating}
+      />
+      <Toast ref={toastRef} position="center" opacity={0.5} />
     </ScrollView>
   );
 }
@@ -206,5 +288,17 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "grey",
     textAlign: "right"
+  },
+  viewFavorite: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    zIndex: 2,
+    backgroundColor: "white",
+    borderBottomLeftRadius: 100,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 15,
+    paddingRight: 5
   }
 });

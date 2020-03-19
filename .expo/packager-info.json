@@ -3,8 +3,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": "https://us-7mu.jonatanmgdev.ecodeas.exp.direct",
-  "packagerNgrokUrl": "https://packager.us-7mu.jonatanmgdev.ecodeas.exp.direct",
-  "ngrokPid": 19165,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }

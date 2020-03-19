@@ -40,7 +40,7 @@ export default function Posts(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListPosts", {
-                postsCategory: "metales"
+                postsCategory: "postTypeMetal"
               });
             }}
           >
@@ -56,7 +56,7 @@ export default function Posts(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListPosts", {
-                postsCategory: "plasticos"
+                postsCategory: "postTypePlastic"
               });
             }}
           >
@@ -74,7 +74,7 @@ export default function Posts(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListPosts", {
-                postsCategory: "textiles"
+                postsCategory: "postTypeTextile"
               });
             }}
           >
@@ -90,7 +90,7 @@ export default function Posts(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListPosts", {
-                postsCategory: "papeles"
+                postsCategory: "postTypePaper"
               });
             }}
           >
@@ -107,7 +107,7 @@ export default function Posts(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListPosts", {
-                postsCategory: "vidrios"
+                postsCategory: "postTypeGlass"
               });
             }}
           >

@@ -3,8 +3,10 @@ import PostsScreen from "../screens/Posts/Posts";
 import ListPostScreen from "../screens/Posts/listPosts";
 import AddPostScreen from "../screens/Posts/addPost";
 import PostScreen from "../screens/Posts/Post";
+import AddReviewPostScreen from "../screens/Posts/AddReviewPost";
 
-const PostScreenStacks = createStackNavigator({
+
+const PostsStacks = createStackNavigator({
   Posts: {
     screen: PostsScreen,
     navigationOptions: () => ({
@@ -22,6 +24,19 @@ const PostScreenStacks = createStackNavigator({
     screen: PostScreen,
     navigationOptions: () => ({
       title: "Ficha del post",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    })
+  },
+  AddReviewPost: {
+    screen: AddReviewPostScreen,
+    navigationOptions: () => ({
+      title: "Escribir valoración",
       headerTintColor: "white",
       headerStyle: {
         backgroundColor: "#2BA418"
@@ -59,4 +74,4 @@ const PostScreenStacks = createStackNavigator({
   }
 });
 
-export default PostScreenStacks;
+export default PostsStacks;

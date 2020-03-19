@@ -29,11 +29,11 @@ export default function ListEventsTemplate(props) {
           ListFooterComponent={<FooterList isLoading={isLoading} />}
         />
       ) : (
-        <View style={styles.loadingEvents}>
-          <ActivityIndicator size="large" />
-          <Text>Cargando eventos...</Text>
-        </View>
-      )}
+          <View style={styles.loadingEvents}>
+            <ActivityIndicator size="large" />
+            <Text>Cargando eventos...</Text>
+          </View>
+        )}
     </View>
   );
 }
@@ -55,7 +55,7 @@ function Event(props) {
   });
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Event", { event })}>
+    <TouchableOpacity onPress={() => navigation.navigate("Event", { event: event.item.event })}>
       <View style={styles.viewEvent}>
         <Card>
           <Grid>

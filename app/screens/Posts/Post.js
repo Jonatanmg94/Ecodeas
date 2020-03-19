@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView, Text, Dimensions } from "react-native";
 import { Rating, Card, Icon, ListItem } from "react-native-elements";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Carousel from "../../components/Carousel";
+import ListPosts from "../../components/Posts/ListComments";
 import moment from "moment";
 import * as firebase from "firebase";
 
@@ -12,6 +13,8 @@ export default function Post(props) {
   const { navigation } = props;
   const { post } = navigation.state.params.post.item;
   const [imagesPost, setImagesPost] = useState([]);
+  const [rating, setRating] = useState(post.rating);
+
 
   useEffect(() => {
     const arrayUrls = [];
@@ -39,6 +42,11 @@ export default function Post(props) {
         description={post.description}
         rating={post.rating}
         createAt={post.createAt}
+      />
+      <ListPosts
+        navigation={navigation}
+        idPost={post.id}
+        setRating={setRating}
       />
     </ScrollView>
   );

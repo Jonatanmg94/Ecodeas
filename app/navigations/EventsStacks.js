@@ -3,6 +3,7 @@ import EventsScreen from "../screens/Events/Events";
 import ListEventsScreen from "../screens/Events/listEvents";
 import AddEventScreen from "../screens/Events/addEvent";
 import EventScreen from "../screens/Events/Event";
+import AddReviewEventScreen from "../screens/Events/AddReviewEvent";
 
 const EventScreenStacks = createStackNavigator({
   Events: {
@@ -31,10 +32,23 @@ const EventScreenStacks = createStackNavigator({
       }
     })
   },
+  AddReviewEvent: {
+    screen: AddReviewEventScreen,
+    navigationOptions: () => ({
+      title: "Escribir valoración",
+      headerTintColor: "white",
+      headerStyle: {
+        backgroundColor: "#2BA418"
+      },
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    })
+  },
   Event: {
     screen: EventScreen,
     navigationOptions: props => ({
-      title: props.navigation.state.params.event.item.event.name,
+      title: props.navigation.state.params.event.name,
       headerTintColor: "white",
       headerStyle: {
         backgroundColor: "#2BA418"

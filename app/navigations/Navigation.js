@@ -2,10 +2,11 @@ import React from "react";
 import { Icon } from "react-native-elements";
 import { createAppContainerv, createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-import PostsScreenStacks from "./PostScreenStacks";
+import PostsScreenStacks from "./PostsStacks";
 import EventsScreenStacks from "./EventsStacks";
 import SearchSreenStacks from "./SearchStacks";
 import AccountScreenStacks from "./AccountStacks";
+import FavoritesScreenStacks from "./FavoritesStacks";
 
 const NavigationStacks = createBottomTabNavigator(
   {
@@ -31,6 +32,20 @@ const NavigationStacks = createBottomTabNavigator(
           <Icon
             type="material-community"
             name="format-list-bulleted"
+            size={22}
+            color={tintColor}
+          />
+        )
+      })
+    },
+    Favorites: {
+      screen: FavoritesScreenStacks,
+      navigationOptions: () => ({
+        tabBarLabel: "Favoritos",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="heart-outline"
             size={22}
             color={tintColor}
           />
@@ -68,7 +83,7 @@ const NavigationStacks = createBottomTabNavigator(
   },
   {
     initialRouteName: "Events",
-    order: ["Search", "Posts", "Events", "MyAccount"],
+    order: ["Search", "Posts", "Favorites", "Events", "MyAccount"],
     tabBarOptions: {
       inactiveTintColor: "#CACACA",
       activeTintColor: "#2BA418",
