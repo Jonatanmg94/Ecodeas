@@ -37,7 +37,7 @@ export default function AddReviewPost(props) {
                 rating: rating,
                 createAt: new Date()
             };
-            db.collection("reviews")
+            db.collection("posts-reviews")
                 .add(payLoad)
                 .then(() => {
                     updatePost();

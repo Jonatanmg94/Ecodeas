@@ -40,7 +40,7 @@ export default function Post(props) {
       <TitlePost
         name={post.name}
         description={post.description}
-        rating={post.rating}
+        rating={rating}
         createAt={post.createAt}
       />
       <ListPosts

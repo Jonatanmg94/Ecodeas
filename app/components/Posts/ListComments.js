@@ -21,7 +21,7 @@ export default function ListComments(props) {
             const resultReviews = [];
             const arrayRating = [];
 
-            db.collection("reviews")
+            db.collection("posts-reviews")
                 .where("idPost", "==", idPost)
                 .get()
                 .then(response => {

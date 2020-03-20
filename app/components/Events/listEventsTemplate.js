@@ -11,7 +11,6 @@ import {
 import { Image, Icon, Card } from "react-native-elements";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import * as firebase from "firebase";
-import moment from "moment";
 
 export default function ListEventsTemplate(props) {
   YellowBox.ignoreWarnings(["Setting a timer"]);
@@ -40,7 +39,7 @@ export default function ListEventsTemplate(props) {
 
 function Event(props) {
   const { event, navigation } = props;
-  const { name, description, images, dateInit, type } = event.item.event;
+  const { name, description, images, dateInit } = event.item.event;
   const [imageEvent, setImageEvent] = useState(null);
 
   useEffect(() => {

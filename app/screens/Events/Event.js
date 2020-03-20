@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Component } from "react";
 import { StyleSheet, View, ScrollView, Text, Dimensions } from "react-native";
 import { Rating, Card, Icon, ListItem } from "react-native-elements";
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -20,7 +20,32 @@ export default function Event(props) {
   const [imagesEvent, setImagesEvent] = useState([]);
   const [rating, setRating] = useState(event.rating);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [userLogged, setUserLogged] = useState(false);
   const toastRef = useRef();
+
+  console.log("userlogged sin hacer nada: " + userLogged)
+
+  firebase.auth().onAuthStateChanged(user => {
+    user ? setUserLogged(true) : setUserLogged(false);
+  })
+
+  useEffect(() => {
+    if (userLogged === true) {
+      console.log("userlogged dentro del if: " + userLogged);
+      db.collection("events-favorites")
+        .where("idEvent", "==", event.id)
+        .where("idUser", "==", firebase.auth().currentUser.uid)
+        .get()
+        .then(response => {
+          if (response.docs.length === 1) {
+            setIsFavorite(true);
+          }
+        });
+    } else {
+      console.log("No ha iniciado sesión, estado de userLogged: " + userLogged);
+    }
+  }, []);
+
   useEffect(() => {
     const arrayUrls = [];
     (async () => {
@@ -39,35 +64,32 @@ export default function Event(props) {
     })();
   }, []);
 
-  useEffect(() => {
-    db.collection("events-favorites")
-      .where("idEvent", "==", event.id)
-      .where("idUser", "==", firebase.auth().currentUser.uid)
-      .get()
-      .then(response => {
-        if (response.docs.length === 1) {
-          setIsFavorite(true);
-        }
-      });
-  }, []);
+
 
   const addFavorite = () => {
-    const payload = {
-      idUser: firebase.auth().currentUser.uid,
-      idEvent: event.id
-    };
-    db.collection("events-favorites")
-      .add(payload)
-      .then(() => {
-        setIsFavorite(true);
-        toastRef.current.show("Evento añadido a la lista de favoritos", 3000);
-      })
-      .catch(() => {
-        toastRef.current.show(
-          "No se ha podido añadir a la lista de favoritos",
-          3000
-        );
-      });
+    if (!userLogged) {
+      toastRef.current.show(
+        "Para usar el sistema de favoritos tienes que estar logeado",
+        2000
+      );
+    } else {
+      const payload = {
+        idUser: firebase.auth().currentUser.uid,
+        idEvent: event.id
+      };
+      db.collection("events-favorites")
+        .add(payload)
+        .then(() => {
+          setIsFavorite(true);
+          toastRef.current.show("Evento añadido a la lista de favoritos", 3000);
+        })
+        .catch(() => {
+          toastRef.current.show(
+            "No se ha podido añadir a la lista de favoritos",
+            3000
+          );
+        });
+    }
   };
 
   const removeFavorite = () => {
