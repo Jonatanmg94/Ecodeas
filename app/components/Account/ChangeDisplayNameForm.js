@@ -4,7 +4,7 @@ import { Input, Button } from "react-native-elements";
 import * as firebase from "firebase";
 
 export default function ChangeDisplayNameForm(props) {
-  const { displayName, setIsVisibleModal, setReloadData, toastRef } = props;
+  const { displayName, setIsVisibleModal, setReloadData, toastRef, navigation } = props;
   const [newDisplayName, setNewDisplayName] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ export default function ChangeDisplayNameForm(props) {
         .then(() => {
           setIsLoading(false);
           setReloadData(true);
-          toastRef.current.show("Nombre actualizado correctamente");
+          navigation.state.params.setReloadData("true"), navigation.pop(2);
           setIsVisibleModal(false);
         })
         .catch(() => {

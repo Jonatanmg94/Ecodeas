@@ -7,6 +7,7 @@ import EventsScreenStacks from "./EventsStacks";
 import SearchSreenStacks from "./SearchStacks";
 import AccountScreenStacks from "./AccountStacks";
 import FavoritesScreenStacks from "./FavoritesStacks";
+import RankingScreenStacks from "./RankingStacks";
 
 const NavigationStacks = createBottomTabNavigator(
   {
@@ -18,6 +19,20 @@ const NavigationStacks = createBottomTabNavigator(
           <Icon
             type="material-community"
             name="magnify"
+            size={22}
+            color={tintColor}
+          />
+        )
+      })
+    },
+    Ranking: {
+      screen: RankingScreenStacks,
+      navigationOptions: () => ({
+        tabBarLabel: "Ranking",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="chess-queen"
             size={22}
             color={tintColor}
           />
@@ -83,7 +98,7 @@ const NavigationStacks = createBottomTabNavigator(
   },
   {
     initialRouteName: "Events",
-    order: ["Search", "Posts", "Favorites", "Events", "MyAccount"],
+    order: ["Search", "Ranking", "Posts", "Favorites", "Events", "MyAccount"],
     tabBarOptions: {
       inactiveTintColor: "#CACACA",
       activeTintColor: "#2BA418",

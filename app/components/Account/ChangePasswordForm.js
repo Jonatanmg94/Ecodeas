@@ -39,8 +39,8 @@ export default function ChangePasswordForm(props) {
                 .currentUser.updatePassword(newPassword)
                 .then(() => {
                   setIsLoading(false);
-                  toastRef.current.show("Contraseña actualizada");
                   setIsVisibleModal(false);
+                  navigation.state.params.setReloadData("true"), navigation.pop(2);
                   firebase.auth().signOut();
                   navigation.navigate("MyAccount");
                 })

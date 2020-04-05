@@ -23,7 +23,7 @@ export default function Login(props) {
         <CreateAccount navigation={navigation} />
       </View>
       <Divider style={styles.divider} />
-      <View style={styles.viewContainer}>
+      <View style={styles.viewFacebook}>
         <LoginFacebook toastRef={toastRef} navigation={navigation} />
       </View>
       <Toast
@@ -63,8 +63,12 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   viewContainer: {
-    marginRight: 5,
-    marginLeft: 5
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  viewFacebook: {
+    marginRight: 30,
+    marginLeft: 30,
   },
   divider: {
     backgroundColor: "#2BA418",

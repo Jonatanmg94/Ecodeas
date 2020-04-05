@@ -133,6 +133,7 @@ function InfoUser(props) {
             setIsVisibleModal={setIsVisibleModal}
             setReloadData={setReloadData}
             toastRef={toastRef}
+            navigation={navigation}
           />
         );
         setIsVisibleModal(true);
@@ -144,6 +145,7 @@ function InfoUser(props) {
             setIsVisibleModal={setIsVisibleModal}
             setReloadData={setReloadData}
             toastRef={toastRef}
+            navigation={navigation}
           />
         );
         setIsVisibleModal(true);

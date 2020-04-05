@@ -95,11 +95,11 @@ export default function Favorites(props) {
           keyExtractor={(item, index) => index.toString()}
         />
       ) : (
-        <View style={styles.loaderEvents}>
-          <ActivityIndicator size="large" />
-          <Text>Cargando eventos</Text>
-        </View>
-      )}
+          <View style={styles.loaderEvents}>
+            <ActivityIndicator size="large" />
+            <Text>Cargando eventos</Text>
+          </View>
+        )}
       <Toast ref={toastRef} position="center" opacity={1} />
       <Loading text="Eliminando Evento" isVisible={isVisibleLoding} />
     </View>
@@ -220,15 +220,15 @@ function UserNoLogged(props) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <NavigationEvents onWillFocus={() => setReloadEvents(true)} />
-      <Icon type="material-community" name="alert-outline" size={50} />
-      <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>
+      <Icon type="material-community" name="alert-outline" size={70} />
+      <Text style={{ fontSize: 15, fontWeight: "bold", textAlign: "center" }}>
         Necesitas estar logeado para ver esta sección.
       </Text>
       <Button
         title="Ir al login"
         onPress={() => navigation.navigate("Login")}
         containerStyle={{ marginTop: 20, width: "80%" }}
-        buttonStyle={{ backgroundColor: "#00a680" }}
+        buttonStyle={{ backgroundColor: "#2BA418", borderRadius: 10 }}
       />
     </View>
   );

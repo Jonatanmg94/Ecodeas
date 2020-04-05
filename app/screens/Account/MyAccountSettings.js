@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState, useEffect, useRef, Component } from "react";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { Button, Image } from "react-native-elements";
 import * as firebase from "firebase";
 import InfoUser from "../../components/Account/InfoUser";

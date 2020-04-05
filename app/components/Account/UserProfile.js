@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import { Avatar } from "react-native-elements";
+import { Avatar, Card } from "react-native-elements";
 import * as firebase from "firebase";
 import { YellowBox } from "react-native";
 

@@ -5,7 +5,7 @@ import * as firebase from "firebase";
 import { reauthenticate } from "../../utils/Api";
 
 export default function ChangeEmailForm(props) {
-  const { email, setIsVisibleModal, setReloadData, toastRef } = props;
+  const { email, setIsVisibleModal, setReloadData, toastRef, navigation } = props;
   const [newEmail, setNewEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
@@ -26,7 +26,7 @@ export default function ChangeEmailForm(props) {
             .then(() => {
               setIsLoading(false);
               setReloadData(true);
-              toastRef.current.show("Email actualizado correctamente");
+              navigation.state.params.setReloadData("true"), navigation.pop(2);
               setIsVisibleModal(false);
             })
             .catch(() => {

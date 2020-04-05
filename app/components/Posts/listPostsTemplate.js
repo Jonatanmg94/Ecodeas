@@ -28,11 +28,11 @@ export default function ListPostsTemplate(props) {
           ListFooterComponent={<FooterList isLoading={isLoading} />}
         />
       ) : (
-        <View style={styles.loadingEvents}>
-          <ActivityIndicator size="large" />
-          <Text>Cargando posts...</Text>
-        </View>
-      )}
+          <View style={styles.loadingEvents}>
+            <ActivityIndicator size="large" />
+            <Text>Cargando posts...</Text>
+          </View>
+        )}
     </View>
   );
 }
@@ -54,7 +54,7 @@ function Post(props) {
   });
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Post", { post })}>
+    <TouchableOpacity onPress={() => navigation.navigate("Post", { post: post.item.post })}>
       <View style={styles.viewEvent}>
         <Card>
           <Grid>

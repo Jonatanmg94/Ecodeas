@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     width: "95%"
   },
   btnRegister: {
-    backgroundColor: "#2BA418"
+    backgroundColor: "#2BA418",
+    borderRadius: 10
   }
 });

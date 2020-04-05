@@ -11,7 +11,7 @@ const screenWidth = Dimensions.get("window").width;
 
 export default function Post(props) {
   const { navigation } = props;
-  const { post } = navigation.state.params.post.item;
+  const { post } = navigation.state.params;
   const [imagesPost, setImagesPost] = useState([]);
   const [rating, setRating] = useState(post.rating);
 

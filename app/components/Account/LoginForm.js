@@ -95,7 +95,8 @@ const styles = StyleSheet.create({
     width: "95%"
   },
   btnLogin: {
-    backgroundColor: "#2BA418"
+    backgroundColor: "#2BA418",
+    borderRadius: 10
   },
   iconRight: {
     color: "#c1c1c1"
