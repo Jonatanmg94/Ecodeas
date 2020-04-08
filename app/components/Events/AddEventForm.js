@@ -84,7 +84,7 @@ export default function AddEventForm(props) {
       uploadImagesStorage(imagesSelected).then(arrayImages => {
         db.collection("events")
           .add({
-            name: eventName,
+            name: eventName.toLowerCase(),
             description: eventDescription,
             location: eventLocation,
             country: eventCountry,
@@ -112,24 +112,9 @@ export default function AddEventForm(props) {
             toastRef.current.show(
               "Error al subir el evento, intentelo más tarde"
             );
-            console.log(error);
           });
       });
     }
-  };
-
-  const testeoVariables = () => {
-    console.log("eventName " + eventName);
-    console.log("eventDescription " + eventDescription);
-    console.log("eventCapacity " + eventCapacity);
-    console.log("eventLocation " + eventLocation);
-    console.log("eventCountry " + eventCountry);
-    console.log("eventState " + eventState);
-    console.log("eventStreet " + eventStreet);
-    console.log("eventPostalCode " + eventPostalCode);
-    console.log("eventdateInit " + eventDateInit);
-    console.log("eventdateFin " + eventDateFin);
-    console.log("eventype " + eventType);
   };
 
   const uploadImagesStorage = async imageArray => {
@@ -176,7 +161,6 @@ export default function AddEventForm(props) {
         setEventStreet={setEventStreet}
         setEventPostalCode={setEventPostalCode}
         setIsVisibleMap={setIsVisibleMap}
-        testeoVariables={testeoVariables}
       />
       <Map
         isVisibleMap={isVisibleMap}
@@ -212,7 +196,6 @@ function FormAdd(props) {
     setEventStreet,
     setEventPostalCode,
     setIsVisibleMap,
-    testeoVariables
   } = props;
 
   return (
@@ -447,11 +430,11 @@ function ImageEventFeatured(props) {
           style={{ width: widthScreen, height: 200 }}
         />
       ) : (
-        <Image
-          source={require("../../../assets/img/Noimage.png")}
-          style={{ width: widthScreen, height: 200 }}
-        />
-      )}
+          <Image
+            source={require("../../../assets/img/Noimage.png")}
+            style={{ width: widthScreen, height: 200 }}
+          />
+        )}
     </View>
   );
 }
@@ -483,7 +466,6 @@ function UploadImage(props) {
         );
       } else {
         setImagesSelected([...imagesSelected, result.uri]);
-        console.log(imagesSelected);
       }
     }
   };

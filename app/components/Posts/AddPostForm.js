@@ -61,7 +61,7 @@ export default function AddPostForm(props) {
       uploadImagesStorage(imagesSelected).then(arrayImages => {
         db.collection("posts")
           .add({
-            name: postName,
+            name: postName.toLowerCase(),
             description: postDescription,
             postVideoUrl: postVideoUrl,
             postTypeWood: postTypeWood,
@@ -87,7 +87,6 @@ export default function AddPostForm(props) {
             toastRef.current.show(
               "Error al subir el post, intentelo más tarde"
             );
-            console.log(error);
           });
       });
     }
@@ -274,11 +273,11 @@ function ImagePostFeatured(props) {
           style={{ width: widthScreen, height: 200 }}
         />
       ) : (
-        <Image
-          source={require("../../../assets/img/Noimage.png")}
-          style={{ width: widthScreen, height: 200 }}
-        />
-      )}
+          <Image
+            source={require("../../../assets/img/Noimage.png")}
+            style={{ width: widthScreen, height: 200 }}
+          />
+        )}
     </View>
   );
 }
@@ -310,7 +309,6 @@ function UploadImage(props) {
         );
       } else {
         setImagesSelected([...imagesSelected, result.uri]);
-        console.log(imagesSelected);
       }
     }
   };

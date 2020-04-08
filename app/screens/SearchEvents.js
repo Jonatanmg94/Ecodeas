@@ -17,9 +17,11 @@ export default function Search(props) {
     }, [search]);
 
     const [onSearch] = useDebouncedCallback(() => {
+
         if (search) {
+            var busqueda = search.toLowerCase();
             fireSQL
-                .query(`SELECT * FROM events WHERE name LIKE '${search}%'`)
+                .query(`SELECT * FROM events WHERE name LIKE '${busqueda}%'`)
                 .then(response => {
                     setEvents(response);
                 });

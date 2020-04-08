@@ -13,11 +13,10 @@ function UserGuest(props) {
         style={styles.image}
         resizeMode="contain"
       />
-      <Text style={styles.title}>Súmate a la comunidad Ecodeas</Text>
+      <Text style={styles.title}>Súmate a nuestra comunidad</Text>
       <Text style={styles.description}>
-        Con tu cuenta podrás crear nuevas publicaciones, seguir a otros
-        usuarios, añadir tu asistencia a los eventos y beneficiarte de nuestro
-        sistema de puntos.
+        Con tu cuenta podrás crear nuevos posts y eventos, además de poder publicar opiniones en ellos.
+        Regístrate ya para comenzar a cambiar tu entorno con Ecodeas.
       </Text>
       <Text style={styles.description}>Regístrate ya o inicia sesión.</Text>
       <View style={styles.viewBtn}>

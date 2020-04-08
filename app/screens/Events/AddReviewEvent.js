@@ -27,7 +27,6 @@ export default function AddReviewEvent(props) {
     } else {
       setIsLoading(true);
       const user = firebase.auth().currentUser;
-      console.log(user);
       const payLoad = {
         idUser: user.uid,
         avatarUser: user.photoURL,

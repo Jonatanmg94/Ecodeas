@@ -67,26 +67,26 @@ export default function ListReviews(props) {
           }
         />
       ) : (
-        <View style={{ flex: 1 }}>
-          <Text
-            style={{ textAlign: "center", color: "#2BA418", padding: 10 }}
-            onPress={() => navigation.navigate("Login")}
-          >
-            Para escribir un comentario es necesario estar logeado
+          <View style={{ flex: 1 }}>
+            <Text
+              style={{ textAlign: "center", color: "#2BA418", padding: 10 }}
+              onPress={() => navigation.navigate("Login")}
+            >
+              Para escribir un comentario es necesario estar logeado
           </Text>
-          <Text
-            style={{
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "#2BA418",
-              paddingBottom: 10
-            }}
-            onPress={() => navigation.navigate("Login")}
-          >
-            pulsa AQUI para iniciar sesión
+            <Text
+              style={{
+                fontWeight: "bold",
+                textAlign: "center",
+                color: "#2BA418",
+                paddingBottom: 10
+              }}
+              onPress={() => navigation.navigate("Login")}
+            >
+              pulsa AQUI para iniciar sesión
           </Text>
-        </View>
-      )}
+          </View>
+        )}
 
       <FlatList
         data={reviews}
@@ -100,7 +100,6 @@ export default function ListReviews(props) {
 function Review(props) {
   const { title, review, rating, createAt, avatarUser } = props.review.item;
   const createDateReview = new Date(createAt.seconds * 1000);
-  console.log(createDateReview);
   return (
     <View style={styles.viewReview}>
       <View style={styles.viewImageAvatar}>

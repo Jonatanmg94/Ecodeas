@@ -46,7 +46,6 @@ function LoginForm(props) {
             type="material-community"
             name={"at"}
             iconStyle={styles.iconRight}
-            onPress={() => console.log("Pulsado el icono email")}
           />
         }
       />

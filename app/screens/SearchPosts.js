@@ -17,9 +17,10 @@ export default function SearchPosts(props) {
     }, [search]);
 
     const [onSearch] = useDebouncedCallback(() => {
+        var busqueda = search.toLowerCase();
         if (search) {
             fireSQL
-                .query(`SELECT * FROM posts WHERE name LIKE '${search}%'`)
+                .query(`SELECT * FROM posts WHERE name LIKE '${busqueda}%'`)
                 .then(response => {
                     setPosts(response);
                 });

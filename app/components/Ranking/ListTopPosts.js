@@ -80,7 +80,7 @@ function Post(props) {
                         style={styles.rating}
                     />
                 </View>
-                <Text style={styles.description}>{description}</Text>
+                <Text style={styles.description}>{description.substring(0, 80) + "..."}</Text>
             </Card>
         </TouchableOpacity>
     );

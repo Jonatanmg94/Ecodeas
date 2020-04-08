@@ -29,7 +29,6 @@ function RegisterForm(props) {
             1000
           );
         } else {
-          console.log("email: " + email + " contraseña: " + password);
           await firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
