@@ -74,7 +74,7 @@ export default function AddReviewEvent(props) {
       <View style={styles.viewRating}>
         <AirbnbRating
           count={5}
-          reviews={["Pésimo", "Deficiente", "Normal", "Muy bueno", "Excelente"]}
+          reviews={["Pesimo", "Deficiente", "Normal", "Muy bueno", "Excelente"]}
           defaultRating={0}
           size={35}
           onFinishRating={value => setRating(value)}
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
   viewRating: {
     height: 110,
-    backgroundColor: "#f2f2f2"
+    backgroundColor: "#004d00"
   },
   formReview: {
     margin: 10,

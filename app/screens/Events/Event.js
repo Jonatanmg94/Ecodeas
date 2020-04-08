@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef, Component } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { StyleSheet, View, ScrollView, Text, Dimensions } from "react-native";
 import { Rating, Card, Icon, ListItem } from "react-native-elements";
-import { Col, Row, Grid } from "react-native-easy-grid";
+import { Col, Grid } from "react-native-easy-grid";
 import Carousel from "../../components/Carousel";
 import Map from "../../components/Map";
 import moment from "moment";
@@ -23,28 +23,9 @@ export default function Event(props) {
   const [userLogged, setUserLogged] = useState(false);
   const toastRef = useRef();
 
-  console.log("userlogged sin hacer nada: " + userLogged)
-
   firebase.auth().onAuthStateChanged(user => {
     user ? setUserLogged(true) : setUserLogged(false);
-  })
-
-  useEffect(() => {
-    if (userLogged === true) {
-      console.log("userlogged dentro del if: " + userLogged);
-      db.collection("events-favorites")
-        .where("idEvent", "==", event.id)
-        .where("idUser", "==", firebase.auth().currentUser.uid)
-        .get()
-        .then(response => {
-          if (response.docs.length === 1) {
-            setIsFavorite(true);
-          }
-        });
-    } else {
-      console.log("No ha iniciado sesión, estado de userLogged: " + userLogged);
-    }
-  }, []);
+  });
 
   useEffect(() => {
     const arrayUrls = [];
@@ -64,7 +45,19 @@ export default function Event(props) {
     })();
   }, []);
 
-
+  useEffect(() => {
+    if (userLogged) {
+      db.collection("events-favorites")
+        .where("idEvent", "==", event.id)
+        .where("idUser", "==", firebase.auth().currentUser.uid)
+        .get()
+        .then(response => {
+          if (response.docs.length === 1) {
+            setIsFavorite(true);
+          }
+        });
+    }
+  }, [userLogged]);
 
   const addFavorite = () => {
     if (!userLogged) {

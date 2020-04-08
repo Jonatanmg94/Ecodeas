@@ -6,6 +6,7 @@ import UserLogged from "./UserLogged";
 
 export default function MyAccount() {
   const [login, setLogin] = useState(null);
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       !user ? setLogin(false) : setLogin(true);

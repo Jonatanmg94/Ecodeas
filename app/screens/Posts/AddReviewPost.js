@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     },
     viewRating: {
         height: 110,
-        backgroundColor: "#f2f2f2"
+        backgroundColor: "#004d00"
     },
     formReview: {
         margin: 10,

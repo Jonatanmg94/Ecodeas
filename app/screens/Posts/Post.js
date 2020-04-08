@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ScrollView, Text, Dimensions } from "react-native";
-import { Rating, Card, Icon, ListItem } from "react-native-elements";
+import { StyleSheet, View, ScrollView, Text, Dimensions, Linking, Image } from "react-native";
+import { Rating, Card, Button } from "react-native-elements";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Carousel from "../../components/Carousel";
 import ListPosts from "../../components/Posts/ListComments";
 import moment from "moment";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as firebase from "firebase";
 
 const screenWidth = Dimensions.get("window").width;
@@ -40,6 +41,13 @@ export default function Post(props) {
       <TitlePost
         name={post.name}
         description={post.description}
+        postVideoUrl={post.postVideoUrl}
+        postTypeWood={post.postTypeWood}
+        postTypeGlass={post.postTypeGlass}
+        postTypeMetal={post.postTypeMetal}
+        postTypePaper={post.postTypePaper}
+        postTypePlastic={post.postTypePlastic}
+        postTypeTextile={post.postTypeTextile}
         rating={rating}
         createAt={post.createAt}
       />
@@ -52,8 +60,10 @@ export default function Post(props) {
   );
 }
 
+
+
 function TitlePost(props) {
-  const { name, description, rating, createAt, postVideoUrl } = props;
+  const { name, description, rating, createAt, postVideoUrl, postTypeWood, postTypeGlass, postTypeMetal, postTypePaper, postTypePlastic, postTypeTextile } = props;
   const datePost = createAt.toDate();
 
   return (
@@ -74,9 +84,68 @@ function TitlePost(props) {
             </View>
           </Col>
         </Grid>
-
+        <Text style={styles.descriptionEventTitle}>Descripción: </Text>
         <Text style={styles.eventText}>{description}</Text>
-        <Text style={styles.eventText}>{postVideoUrl}</Text>
+        <View>
+          {postVideoUrl == "" ? <Text></Text> :
+            <Button
+              icon={
+                <Icon
+                  name="youtube"
+                  size={25}
+                  color="white"
+                />
+              }
+              title=" Ver video"
+              buttonStyle={styles.btnStyle}
+              containerStyle={styles.btnContainer}
+              onPress={() => { Linking.openURL(postVideoUrl) }} />}
+        </View>
+        <Text style={styles.materialsEventTitle}>Materiales: </Text>
+        <Grid>
+          <Col>
+            <Image
+              source={require("../../../assets/img/madera.png")}
+              style={postTypeWood == false ? styles.materialNo : styles.materialOk}
+              resizeMode="contain"
+            />
+          </Col>
+          <Col>
+            <Image
+              source={require("../../../assets/img/metales.png")}
+              style={postTypeMetal == false ? styles.materialNo : styles.materialOk}
+              resizeMode="contain"
+            />
+          </Col>
+          <Col>
+            <Image
+              source={require("../../../assets/img/plastico.png")}
+              style={postTypePlastic == false ? styles.materialNo : styles.materialOk}
+              resizeMode="contain"
+            />
+          </Col>
+          <Col>
+            <Image
+              source={require("../../../assets/img/textil.png")}
+              style={postTypeTextile == false ? styles.materialNo : styles.materialOk}
+              resizeMode="contain"
+            />
+          </Col>
+          <Col>
+            <Image
+              source={require("../../../assets/img/papel.png")}
+              style={postTypePaper == false ? styles.materialNo : styles.materialOk}
+              resizeMode="contain"
+            />
+          </Col>
+          <Col>
+            <Image
+              source={require("../../../assets/img/cristal.png")}
+              style={postTypeGlass == false ? styles.materialNo : styles.materialOk}
+              resizeMode="contain"
+            />
+          </Col>
+        </Grid>
         <Text style={styles.eventTextPublished}>
           {"Publicado: " +
             moment.unix(datePost / 1000).format("DD MMM YYYY hh:mm a")}
@@ -92,6 +161,14 @@ const styles = StyleSheet.create({
   },
   viewEventTitle: {
     margin: 0
+  },
+  descriptionEventTitle: {
+    fontSize: 16,
+    fontWeight: "bold"
+  },
+  materialsEventTitle: {
+    fontSize: 16,
+    fontWeight: "bold"
   },
   nameEvent: {
     fontSize: 20,
@@ -138,5 +215,26 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "grey",
     textAlign: "right"
+  },
+  btnStyle: {
+    backgroundColor: "#ff0000",
+    borderRadius: 10
+  },
+  btnContainer: {
+    width: "100%",
+    paddingBottom: 20,
+    paddingTop: 10
+  },
+  materialNo: {
+    height: 30,
+    width: "100%",
+    marginBottom: 10,
+    tintColor: "#969696"
+  },
+  materialOk: {
+    height: 30,
+    width: "100%",
+    marginBottom: 10,
+    tintColor: "#2BA418"
   }
 });
