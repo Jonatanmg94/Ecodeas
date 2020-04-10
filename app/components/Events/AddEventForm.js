@@ -21,7 +21,7 @@ import {
 } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
-import MapView, { Marker } from "react-native-maps";
+// import MapView, { Marker } from "react-native-maps";
 import Modal from "../Modal";
 import * as Location from "expo-location";
 import Moment from "moment";
@@ -382,6 +382,7 @@ function Map(props) {
   return (
     <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
       <View>
+        {/*
         {location && (
           <MapView
             style={styles.mapStyle}
@@ -399,6 +400,7 @@ function Map(props) {
               }}
             />
           </MapView>
+            */}
         )}
         <View style={styles.viewMapBtn}>
           <Button

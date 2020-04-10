@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, ScrollView, Text, Dimensions } from "react-native";
 import { Rating, Card, Icon, ListItem } from "react-native-elements";
 import { Col, Grid } from "react-native-easy-grid";
 import Carousel from "../../components/Carousel";
-import Map from "../../components/Map";
+//import Map from "../../components/Map";
 import moment from "moment";
 import ListReviews from "../../components/Events/ListReviews";
 import Toast from "react-native-easy-toast";
@@ -232,7 +232,9 @@ function EventInfo(props) {
           <Text style={styles.eventInfoTitle}>Información del evento</Text>
         </View>
         <View style={styles.viewEventBlock}>
+          {/*
           <Map location={location} name={name} height={160} />
+          */}
           {listInfo.map((item, index) => (
             <ListItem
               key={index}

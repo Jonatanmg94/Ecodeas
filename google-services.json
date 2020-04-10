@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "479170582492",
+    "firebase_url": "https://ecodeas-5142d.firebaseio.com",
+    "project_id": "ecodeas-5142d",
+    "storage_bucket": "ecodeas-5142d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479170582492:android:da533ed1f07edb2668a119",
+        "android_client_info": {
+          "package_name": "com.canarypixel.ecodeas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "479170582492-7271dcmukcjfq86hd71o9vo7he3m3d7d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQxphbIaVYQf0q3nXL9fAgPZbccbQyXG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479170582492-7271dcmukcjfq86hd71o9vo7he3m3d7d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

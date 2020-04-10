@@ -4,7 +4,11 @@
     "slug": "ecodeas",
     "privacy": "public",
     "sdkVersion": "36.0.0",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,14 +20,31 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "package": "com.canarypixel.ecodeas",
-      "permissions": ["CAMERA_ROLL", "LOCATION"],
+      "googleServicesFile": "./google-services.json",
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyA0KKtVUn4TLtSik4Yca6Va_pUrZnmVy6s",
+          "certificateHash": "C991DABD04326862A6E41755D4AE50CCB9489253"
+        }
+      },
+      "permissions": [
+        "CAMERA_ROLL",
+        "LOCATION",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
       "versionCode": 1
-    }
+    },
+    "description": ""
   }
 }
