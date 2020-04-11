@@ -50,9 +50,10 @@ function RegisterForm(props) {
   return (
     <View style={styles.formContainer} behavior="padding" enabled>
       <Input
+        maxLength={100}
         placeholder="Correo electrónico"
         containerStyle={styles.inputForm}
-        onChange={e => setEmail(e.nativeEvent.text)}
+        onChange={(e) => setEmail(e.nativeEvent.text)}
         rightIcon={
           <Icon
             type="material-community"
@@ -62,11 +63,12 @@ function RegisterForm(props) {
         }
       />
       <Input
+        maxLength={100}
         placeholder="Contraseña"
         secureTextEntry={hidePassword}
         password={true}
         containerStyle={styles.inputForm}
-        onChange={e => setPassword(e.nativeEvent.text)}
+        onChange={(e) => setPassword(e.nativeEvent.text)}
         rightIcon={
           <Icon
             type="material-community"
@@ -77,11 +79,12 @@ function RegisterForm(props) {
         }
       />
       <Input
+        maxLength={100}
         placeholder="Repetir Contraseña"
         containerStyle={styles.inputForm}
         password={true}
         secureTextEntry={hideRepeatPassword}
-        onChange={e => setRepeatPassword(e.nativeEvent.text)}
+        onChange={(e) => setRepeatPassword(e.nativeEvent.text)}
         rightIcon={
           <Icon
             type="material-community"
@@ -92,7 +95,7 @@ function RegisterForm(props) {
         }
       />
       <Button
-        title="Registrarme"
+        title="Crear mi cuenta"
         containerStyle={styles.btnContainerRegister}
         buttonStyle={styles.btnRegister}
         onPress={register}
@@ -108,22 +111,23 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   inputForm: {
     width: "100%",
     marginTop: 5,
-    marginBottom: 19
+    marginBottom: 19,
   },
   iconRight: {
-    color: "#c1c1c1"
+    color: "#c1c1c1",
   },
   btnContainerRegister: {
     marginTop: 10,
-    width: "95%"
+    width: "95%",
   },
   btnRegister: {
     backgroundColor: "#2BA418",
-    borderRadius: 10
-  }
+    borderRadius: 10,
+    marginBottom: 10,
+  },
 });

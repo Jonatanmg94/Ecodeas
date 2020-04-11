@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ScrollView, Text, Dimensions, Linking, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  Dimensions,
+  Linking,
+  Image,
+} from "react-native";
 import { Rating, Card, Button } from "react-native-elements";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Carousel from "../../components/Carousel";
 import ListPosts from "../../components/Posts/ListComments";
 import moment from "moment";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from "react-native-vector-icons/FontAwesome";
 import * as firebase from "firebase";
 
 const screenWidth = Dimensions.get("window").width;
@@ -16,17 +24,16 @@ export default function Post(props) {
   const [imagesPost, setImagesPost] = useState([]);
   const [rating, setRating] = useState(post.rating);
 
-
   useEffect(() => {
     const arrayUrls = [];
     (async () => {
       await Promise.all(
-        post.images.map(async idImage => {
+        post.images.map(async (idImage) => {
           await firebase
             .storage()
             .ref(`posts-images/${idImage}`)
             .getDownloadURL()
-            .then(imageUrl => {
+            .then((imageUrl) => {
               arrayUrls.push(imageUrl);
             });
         })
@@ -60,15 +67,25 @@ export default function Post(props) {
   );
 }
 
-
-
 function TitlePost(props) {
-  const { name, description, rating, createAt, postVideoUrl, postTypeWood, postTypeGlass, postTypeMetal, postTypePaper, postTypePlastic, postTypeTextile } = props;
+  const {
+    name,
+    description,
+    rating,
+    createAt,
+    postVideoUrl,
+    postTypeWood,
+    postTypeGlass,
+    postTypeMetal,
+    postTypePaper,
+    postTypePlastic,
+    postTypeTextile,
+  } = props;
   const datePost = createAt.toDate();
 
   return (
     <View style={styles.viewEventTitle}>
-      <Card>
+      <Card containerStyle={styles.cards}>
         <Grid>
           <Col style={{ width: "73%", paddingBottom: 10 }}>
             <Text style={styles.nameEvent}>{name}</Text>
@@ -87,61 +104,73 @@ function TitlePost(props) {
         <Text style={styles.descriptionEventTitle}>Descripción: </Text>
         <Text style={styles.eventText}>{description}</Text>
         <View>
-          {postVideoUrl == "" ? <Text></Text> :
+          {postVideoUrl == "" ? (
+            <Text></Text>
+          ) : (
             <Button
-              icon={
-                <Icon
-                  name="youtube"
-                  size={25}
-                  color="white"
-                />
-              }
+              icon={<Icon name="youtube" size={25} color="white" />}
               title=" Ver video"
               buttonStyle={styles.btnStyle}
               containerStyle={styles.btnContainer}
-              onPress={() => { Linking.openURL(postVideoUrl) }} />}
+              onPress={() => {
+                Linking.openURL(postVideoUrl);
+              }}
+            />
+          )}
         </View>
         <Text style={styles.materialsEventTitle}>Materiales: </Text>
         <Grid>
           <Col>
             <Image
               source={require("../../../assets/img/madera.png")}
-              style={postTypeWood == false ? styles.materialNo : styles.materialOk}
+              style={
+                postTypeWood == false ? styles.materialNo : styles.materialOk
+              }
               resizeMode="contain"
             />
           </Col>
           <Col>
             <Image
               source={require("../../../assets/img/metales.png")}
-              style={postTypeMetal == false ? styles.materialNo : styles.materialOk}
+              style={
+                postTypeMetal == false ? styles.materialNo : styles.materialOk
+              }
               resizeMode="contain"
             />
           </Col>
           <Col>
             <Image
               source={require("../../../assets/img/plastico.png")}
-              style={postTypePlastic == false ? styles.materialNo : styles.materialOk}
+              style={
+                postTypePlastic == false ? styles.materialNo : styles.materialOk
+              }
               resizeMode="contain"
             />
           </Col>
           <Col>
             <Image
               source={require("../../../assets/img/textil.png")}
-              style={postTypeTextile == false ? styles.materialNo : styles.materialOk}
+              style={
+                postTypeTextile == false ? styles.materialNo : styles.materialOk
+              }
               resizeMode="contain"
             />
           </Col>
           <Col>
             <Image
               source={require("../../../assets/img/papel.png")}
-              style={postTypePaper == false ? styles.materialNo : styles.materialOk}
+              style={
+                postTypePaper == false ? styles.materialNo : styles.materialOk
+              }
               resizeMode="contain"
             />
           </Col>
           <Col>
             <Image
               source={require("../../../assets/img/cristal.png")}
-              style={postTypeGlass == false ? styles.materialNo : styles.materialOk}
+              style={
+                postTypeGlass == false ? styles.materialNo : styles.materialOk
+              }
               resizeMode="contain"
             />
           </Col>
@@ -157,84 +186,87 @@ function TitlePost(props) {
 
 const styles = StyleSheet.create({
   viewBody: {
-    flex: 1
+    flex: 1,
   },
   viewEventTitle: {
-    margin: 0
+    margin: 0,
   },
   descriptionEventTitle: {
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   materialsEventTitle: {
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   nameEvent: {
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   rating: {
     position: "absolute",
-    right: 0
+    right: 0,
   },
   descriptionEvent: {
     marginTop: 15,
-    color: "grey"
+    color: "grey",
   },
   viewEventInfo: {
     margin: 10,
-    marginTop: 5
+    marginTop: 5,
   },
   viewEventBlock: {
     marginTop: 5,
     marginBottom: 5,
     marginRight: 15,
-    marginLeft: 15
+    marginLeft: 15,
   },
   eventInfoTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 5
+    marginBottom: 5,
   },
   eventTextTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 10
+    marginBottom: 10,
   },
   eventText: {
     fontSize: 14,
     color: "grey",
-    marginBottom: 10
+    marginBottom: 10,
   },
   containerListItem: {
     borderBottomColor: "#d8d8d8",
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   eventTextPublished: {
     fontSize: 10,
     color: "grey",
-    textAlign: "right"
+    textAlign: "right",
   },
   btnStyle: {
     backgroundColor: "#ff0000",
-    borderRadius: 10
+    borderRadius: 10,
   },
   btnContainer: {
     width: "100%",
     paddingBottom: 20,
-    paddingTop: 10
+    paddingTop: 10,
   },
   materialNo: {
     height: 30,
     width: "100%",
     marginBottom: 10,
-    tintColor: "#969696"
+    tintColor: "#969696",
   },
   materialOk: {
     height: 30,
     width: "100%",
     marginBottom: 10,
-    tintColor: "#2BA418"
-  }
+    tintColor: "#2BA418",
+  },
+  cards: {
+    borderRadius: 10,
+  },
 });

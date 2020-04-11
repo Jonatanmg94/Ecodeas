@@ -12,12 +12,12 @@ const EventScreenStacks = createStackNavigator({
       title: "Eventos",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   AddEvent: {
     screen: AddEventScreen,
@@ -25,12 +25,12 @@ const EventScreenStacks = createStackNavigator({
       title: "Nuevo Evento",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   AddReviewEvent: {
     screen: AddReviewEventScreen,
@@ -38,25 +38,25 @@ const EventScreenStacks = createStackNavigator({
       title: "Escribir valoración",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   Event: {
     screen: EventScreen,
-    navigationOptions: props => ({
+    navigationOptions: (props) => ({
       title: props.navigation.state.params.event.name,
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   ListEvents: {
     screen: ListEventsScreen,
@@ -64,13 +64,13 @@ const EventScreenStacks = createStackNavigator({
       title: "Lista de eventos",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
-  }
+        fontWeight: "bold",
+      },
+    }),
+  },
 });
 
 export default EventScreenStacks;

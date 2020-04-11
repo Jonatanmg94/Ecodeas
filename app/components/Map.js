@@ -1,29 +1,34 @@
 import React from "react";
 import MapView from "react-native-maps";
-import openMap from "react-native-open-maps";
+// import openMap from "react-native-open-maps";
 
 export default function Map(props) {
   const { location, name, height } = props;
 
-  const openAppMap = () => {
-    openMap({
-      latitude: location.latitude,
-      longitude: location.longitude,
-      zoom: 19,
-      query: name
-    });
-  };
+  console.log("location.latitude " + location.latitude);
+  console.log("location.longitude " + location.longitude);
+
+  /*
+    const openAppMap = () => {
+      openMap({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        zoom: 19,
+        query: name
+      });
+    };
+  */
 
   return (
     <MapView
       style={{ height: height, width: "100%" }}
       initialRegion={location}
-      onPress={openAppMap}
+      // onPress={openAppMap}
     >
       <MapView.Marker
         coordinate={{
           latitude: location.latitude,
-          longitude: location.longitude
+          longitude: location.longitude,
         }}
       />
     </MapView>

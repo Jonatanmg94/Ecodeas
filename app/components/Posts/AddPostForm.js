@@ -9,7 +9,7 @@ import {
   Card,
   Divider,
   Text,
-  CheckBox
+  CheckBox,
 } from "react-native-elements";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import * as ImagePicker from "expo-image-picker";
@@ -58,7 +58,7 @@ export default function AddPostForm(props) {
       );
     } else {
       setIsLoading(true);
-      uploadImagesStorage(imagesSelected).then(arrayImages => {
+      uploadImagesStorage(imagesSelected).then((arrayImages) => {
         db.collection("posts")
           .add({
             name: postName.toLowerCase(),
@@ -76,13 +76,13 @@ export default function AddPostForm(props) {
             ratingTotal: 0,
             quantityVoting: 0,
             createAt: new Date(),
-            createdBy: firebaseApp.auth().currentUser.uid
+            createdBy: firebaseApp.auth().currentUser.uid,
           })
           .then(() => {
             setIsLoading(false);
             navigation.navigate("Posts");
           })
-          .catch(error => {
+          .catch((error) => {
             setIsLoading(false);
             toastRef.current.show(
               "Error al subir el post, intentelo más tarde"
@@ -92,17 +92,14 @@ export default function AddPostForm(props) {
     }
   };
 
-  const uploadImagesStorage = async imageArray => {
+  const uploadImagesStorage = async (imageArray) => {
     const imagesBlob = [];
     await Promise.all(
-      imageArray.map(async image => {
+      imageArray.map(async (image) => {
         const response = await fetch(image);
         const blob = await response.blob();
-        const ref = firebase
-          .storage()
-          .ref("posts-images")
-          .child(uuid());
-        await ref.put(blob).then(result => {
+        const ref = firebase.storage().ref("posts-images").child(uuid());
+        await ref.put(blob).then((result) => {
           imagesBlob.push(result.metadata.name);
         });
       })
@@ -162,42 +159,48 @@ function FormAdd(props) {
     postTypePlastic,
     setPostTypeGlass,
     postTypeGlass,
-    setPostStatus
+    setPostStatus,
   } = props;
 
   const changePostTypeWood = () => setPostTypeWood(!postTypeWood);
 
   return (
     <View style={styles.viewForm}>
-      <Card>
+      <Card containerStyle={styles.cards}>
         <View>
           <Text style={styles.txtHeadline} h4>
             Información
           </Text>
           <Input
             maxLength={70}
-            placeholder="Nombre del post"
+            labelStyle={styles.inputLabel}
+            label="Título del post"
+            placeholder="titulo del post..."
+            multiline={true}
             containerStyle={styles.input}
-            onChange={e => setPostName(e.nativeEvent.text)}
+            onChange={(e) => setPostName(e.nativeEvent.text)}
           />
           <Input
             maxLength={500}
-            placeholder="Descripción"
+            labelStyle={styles.inputLabel}
+            label="Descripción"
+            placeholder="descripción del post..."
             containerStyle={styles.textArea}
             multiline={true}
-            onChange={e => setPostDescription(e.nativeEvent.text)}
+            onChange={(e) => setPostDescription(e.nativeEvent.text)}
           />
           <Input
-            maxLength={10}
-            placeholder="Url de video (Opcional)"
+            maxLength={150}
+            labelStyle={styles.inputLabel}
+            label="Youtube video URL (opcional)"
+            placeholder="introduzca la url del video..."
             containerStyle={styles.input}
-            keyboardType="numeric"
-            maxLength={1000000}
-            onChange={e => setPostVideoUrl(e.nativeEvent.text)}
+            maxLength={500}
+            onChange={(e) => setPostVideoUrl(e.nativeEvent.text)}
           />
         </View>
       </Card>
-      <Card>
+      <Card containerStyle={styles.cards}>
         <View style={styles.containerEventType}>
           <Text style={styles.txtHeadline} h4>
             Materiales utilizados
@@ -273,11 +276,11 @@ function ImagePostFeatured(props) {
           style={{ width: widthScreen, height: 200 }}
         />
       ) : (
-          <Image
-            source={require("../../../assets/img/Noimage.png")}
-            style={{ width: widthScreen, height: 200 }}
-          />
-        )}
+        <Image
+          source={require("../../../assets/img/Noimage.png")}
+          style={{ width: widthScreen, height: 200 }}
+        />
+      )}
     </View>
   );
 }
@@ -299,7 +302,7 @@ function UploadImage(props) {
     } else {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
-        aspect: [4, 3]
+        aspect: [4, 3],
       });
 
       if (result.cancelled) {
@@ -313,7 +316,7 @@ function UploadImage(props) {
     }
   };
 
-  const removeImage = image => {
+  const removeImage = (image) => {
     const arrayImages = imagesSelected;
 
     Alert.alert(
@@ -322,15 +325,15 @@ function UploadImage(props) {
       [
         {
           text: "Cancelar",
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "Eliminar",
           onPress: () =>
             setImagesSelected(
-              arrayImages.filter(imageUrl => imageUrl !== image)
-            )
-        }
+              arrayImages.filter((imageUrl) => imageUrl !== image)
+            ),
+        },
       ],
       { cancelable: false }
     );
@@ -348,7 +351,7 @@ function UploadImage(props) {
         />
       )}
 
-      {imagesSelected.map(imagePost => (
+      {imagesSelected.map((imagePost) => (
         <Avatar
           key={imagePost}
           onPress={() => removeImage(imagePost)}
@@ -364,19 +367,19 @@ const styles = StyleSheet.create({
   viewPhoto: {
     alignItems: "center",
     height: 200,
-    marginBottom: 0
+    marginBottom: 0,
   },
   viewBtn: {
     marginLeft: 20,
     marginRight: 20,
     marginTop: 15,
-    marginBottom: 15
+    marginBottom: 15,
   },
   viewImage: {
     flexDirection: "row",
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 30
+    marginTop: 30,
   },
   containerIcon: {
     alignItems: "center",
@@ -384,30 +387,39 @@ const styles = StyleSheet.create({
     marginRight: 5,
     height: 70,
     width: 70,
-    backgroundColor: "#d0d0d0"
+    backgroundColor: "#d0d0d0",
   },
   miniatureStyle: {
     width: 70,
     height: 70,
     marginRight: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   viewForm: {
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
   },
+
   input: {
-    marginBottom: 10
+    marginBottom: 20,
+    backgroundColor: "#F9F9F9",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#D5D5D5",
   },
   textArea: {
-    height: 100,
+    backgroundColor: "#F9F9F9",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#D5D5D5",
     width: "100%",
     padding: 0,
-    margin: 0
+    marginBottom: 20,
   },
   txtHeadline: {
     textAlign: "center",
-    color: "#2BA418"
+    color: "#2BA418",
+    marginBottom: 10,
   },
   btnCreatePost: {
     backgroundColor: "#2BA418",
@@ -417,13 +429,19 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 15,
     marginLeft: 15,
-    marginRight: 15
+    marginRight: 15,
   },
   btnDate: {
     backgroundColor: "#b2b2b2",
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#e7e7e7",
-    marginBottom: 10
-  }
+    marginBottom: 10,
+  },
+  cards: {
+    borderRadius: 20,
+  },
+  inputLabel: {
+    color: "#2BA418",
+  },
 });

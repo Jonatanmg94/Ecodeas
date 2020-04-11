@@ -34,7 +34,7 @@ export default function AddReviewEvent(props) {
         title: title,
         review: review,
         rating: rating,
-        createAt: new Date()
+        createAt: new Date(),
       };
       db.collection("reviews")
         .add(payLoad)
@@ -52,7 +52,7 @@ export default function AddReviewEvent(props) {
 
   const updateEvent = () => {
     const eventRef = db.collection("events").doc(idEvent);
-    eventRef.get().then(response => {
+    eventRef.get().then((response) => {
       const eventData = response.data();
       const ratingTotal = eventData.ratingTotal + rating;
       const quantityVoting = eventData.quantityVoting + 1;
@@ -76,21 +76,24 @@ export default function AddReviewEvent(props) {
           reviews={["Pesimo", "Deficiente", "Normal", "Muy bueno", "Excelente"]}
           defaultRating={0}
           size={35}
-          onFinishRating={value => setRating(value)}
+          onFinishRating={(value) => setRating(value)}
         />
       </View>
       <View style={styles.formReview}>
         <View style={styles.formCard}>
           <Input
-            placeholder="Título"
+            maxLength={50}
+            placeholder="escriba un título..."
+            multiline={true}
             inputContainerStyle={styles.textTitle}
-            onChange={e => setTitle(e.nativeEvent.text)}
+            onChange={(e) => setTitle(e.nativeEvent.text)}
           />
           <Input
-            placeholder="Comentario..."
+            maxLength={150}
+            placeholder="escriba su comentario..."
             multiline={true}
             inputContainerStyle={styles.textArea}
-            onChange={e => setReview(e.nativeEvent.text)}
+            onChange={(e) => setReview(e.nativeEvent.text)}
           />
         </View>
 
@@ -109,47 +112,55 @@ export default function AddReviewEvent(props) {
 
 const styles = StyleSheet.create({
   viewBody: {
-    flex: 1
+    flex: 1,
   },
   viewRating: {
     height: 110,
-    backgroundColor: "#004d00"
+    backgroundColor: "#004d00",
   },
   formReview: {
     margin: 10,
     marginTop: 20,
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
   input: {
-    marginBottom: 5
+    marginBottom: 5,
   },
   textArea: {
-    height: 200,
+    backgroundColor: "#F9F9F9",
     width: "100%",
+    borderRadius: 10,
     padding: 10,
-    margin: 0
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: "#D5D5D5",
   },
   textTitle: {
-    height: 60,
+    backgroundColor: "#F9F9F9",
+    borderRadius: 10,
     width: "100%",
     padding: 10,
-    margin: 0
+    marginTop: 20,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: "#D5D5D5",
   },
   btnContainer: {
     flex: 1,
     justifyContent: "flex-end",
     marginTop: 20,
     marginBottom: 10,
-    width: "95%"
+    width: "95%",
   },
   btn: {
-    backgroundColor: "#2BA418"
+    backgroundColor: "#2BA418",
   },
   formCard: {
     backgroundColor: "#ffffff",
     borderRadius: 10,
     padding: 10,
-    paddingBottom: 20
-  }
+    paddingBottom: 20,
+    margin: 5,
+  },
 });

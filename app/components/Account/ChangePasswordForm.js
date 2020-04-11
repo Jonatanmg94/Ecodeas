@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { Input, Button } from "react-native-elements";
+import { StyleSheet, View } from "react-native";
+import { Input, Button, Text } from "react-native-elements";
 import * as firebase from "firebase";
 import { reauthenticate } from "../../utils/Api";
 
@@ -28,7 +28,7 @@ export default function ChangePasswordForm(props) {
       if (newPassword !== newPasswordRepeat) {
         setError({
           newPassword: "Las nuevas contraseñas deben ser iguales.",
-          newPasswordRepeat: "Las nuevas contraseñas deben ser iguales."
+          newPasswordRepeat: "Las nuevas contraseñas deben ser iguales.",
         });
       } else {
         setIsLoading(true),
@@ -40,7 +40,8 @@ export default function ChangePasswordForm(props) {
                 .then(() => {
                   setIsLoading(false);
                   setIsVisibleModal(false);
-                  navigation.state.params.setReloadData("true"), navigation.pop(2);
+                  navigation.state.params.setReloadData("true"),
+                    navigation.pop(2);
                   firebase.auth().signOut();
                   navigation.navigate("MyAccount");
                 })
@@ -59,45 +60,51 @@ export default function ChangePasswordForm(props) {
 
   return (
     <View>
+      <Text style={styles.txtHeadline} h4>
+        Cambiar Contraseña
+      </Text>
       <Input
+        maxLength={100}
         placeholder="Contraseña actual"
         containerStyle={styles.input}
         password={true}
         secureTextEntry={hidePassword}
-        onChange={e => setPassword(e.nativeEvent.text)}
+        onChange={(e) => setPassword(e.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
           name: hidePassword ? "eye-outline" : "eye-off-outline",
           color: "#c2c2c2",
-          onPress: () => setHidePassword(!hidePassword)
+          onPress: () => setHidePassword(!hidePassword),
         }}
         errorMessage={error.password}
       />
       <Input
+        maxLength={100}
         placeholder="Nueva contraseña"
         containerStyle={styles.input}
         password={true}
         secureTextEntry={hideNewPassword}
-        onChange={e => setNewPassword(e.nativeEvent.text)}
+        onChange={(e) => setNewPassword(e.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
           name: hideNewPassword ? "eye-outline" : "eye-off-outline",
           color: "#c2c2c2",
-          onPress: () => setHideNewPassword(!hideNewPassword)
+          onPress: () => setHideNewPassword(!hideNewPassword),
         }}
         errorMessage={error.newPassword}
       />
       <Input
+        maxLength={100}
         placeholder="Repetir nueva contraseña"
         containerStyle={styles.input}
         password={true}
         secureTextEntry={hideNewPasswordRepeat}
-        onChange={e => setNewPasswordRepeat(e.nativeEvent.text)}
+        onChange={(e) => setNewPasswordRepeat(e.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
           name: hideNewPassword ? "eye-outline" : "eye-off-outline",
           color: "#c2c2c2",
-          onPress: () => setHideNewPasswordRepeat(!hideNewPasswordRepeat)
+          onPress: () => setHideNewPasswordRepeat(!hideNewPasswordRepeat),
         }}
         errorMessage={error.newPasswordRepeat}
       />
@@ -117,16 +124,21 @@ const styles = StyleSheet.create({
   view: {
     alignItems: "center",
     paddingTop: 10,
-    paddingBottom: 10
   },
   input: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   btnContainer: {
-    marginTop: 20,
-    width: "95%"
+    marginTop: 10,
+    width: "95%",
   },
   btn: {
-    backgroundColor: "#00a680"
-  }
+    backgroundColor: "#000000",
+    borderRadius: 10,
+    marginLeft: 10,
+  },
+  txtHeadline: {
+    textAlign: "center",
+    color: "#2BA418",
+  },
 });

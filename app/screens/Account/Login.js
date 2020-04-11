@@ -17,7 +17,7 @@ export default function Login(props) {
         resizeMode="contain"
       />
       <View style={styles.viewContainer}>
-        <Card title="Accede a tu cuenta" style={styles.cardLogin}>
+        <Card containerStyle={styles.cards} title="Accede a tu cuenta">
           <LoginForm toastRef={toastRef} />
         </Card>
         <CreateAccount navigation={navigation} />
@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
   logo: {
     width: "100%",
     height: 150,
-    marginTop: 30
+    marginTop: 30,
   },
   viewContainer: {
-    marginRight: 10,
-    marginLeft: 10,
+    marginRight: 5,
+    marginLeft: 5,
   },
   viewFacebook: {
     marginRight: 30,
@@ -72,18 +72,21 @@ const styles = StyleSheet.create({
   },
   divider: {
     backgroundColor: "#2BA418",
-    margin: 15
+    margin: 15,
   },
   textRegister: {
     marginTop: 15,
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   btnRegister: {
     color: "#2BA418",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   viewTextRegister: {
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
+  cards: {
+    borderRadius: 20,
+  },
 });

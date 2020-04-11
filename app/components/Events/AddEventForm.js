@@ -6,7 +6,7 @@ import {
   Alert,
   Dimensions,
   TouchableOpacity,
-  Picker
+  Picker,
 } from "react-native";
 import {
   Icon,
@@ -16,14 +16,11 @@ import {
   Button,
   Card,
   CheckBox,
-  Divider,
-  Text
+  Text,
 } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
-// import MapView, { Marker } from "react-native-maps";
 import Modal from "../Modal";
-import * as Location from "expo-location";
 import Moment from "moment";
 import DatePicker from "react-native-datepicker";
 import uuid from "uuid/v4";
@@ -48,9 +45,10 @@ export default function AddEventForm(props) {
   const [eventType, setEventType] = useState("recogidas");
   const [eventStatus, setEventStatus] = useState("approbed");
   const [eventCapacity, setEventCapacity] = useState("");
-  const [eventLocation, setEventLocation] = useState("");
-  const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [eventCountry, setEventCountry] = useState("");
+  const [eventContactName, setEventContactName] = useState("");
+  const [eventContactPhone, setEventContactPhone] = useState("");
+  const [eventContactEmail, setEventContactEmail] = useState("");
   const [eventState, setEventState] = useState("");
   const [eventStreet, setEventStreet] = useState("");
   const [eventPostalCode, setEventPostalCode] = useState("");
@@ -61,6 +59,9 @@ export default function AddEventForm(props) {
       !eventDescription ||
       !eventType ||
       !eventCapacity ||
+      !eventContactName ||
+      !eventContactPhone ||
+      !eventContactEmail ||
       !eventCountry ||
       !eventState ||
       !eventStreet ||
@@ -72,21 +73,18 @@ export default function AddEventForm(props) {
       );
     } else if (imagesSelected.length === 0) {
       toastRef.current.show("El evento tiene que tener almenos una foto", 3000);
-    } else if (!eventLocation) {
-      toastRef.current.show(
-        "Debes establecer la localización en el mapa",
-        3000
-      );
     } else if (!eventDateInit || !eventDateFin) {
       toastRef.current.show("Debes establecer las dos fechas del evento", 3000);
     } else {
       setIsLoading(true);
-      uploadImagesStorage(imagesSelected).then(arrayImages => {
+      uploadImagesStorage(imagesSelected).then((arrayImages) => {
         db.collection("events")
           .add({
             name: eventName.toLowerCase(),
             description: eventDescription,
-            location: eventLocation,
+            contactName: eventContactName,
+            contactPhone: eventContactPhone,
+            contactEmail: eventContactEmail,
             country: eventCountry,
             state: eventState,
             street: eventStreet,
@@ -101,13 +99,13 @@ export default function AddEventForm(props) {
             ratingTotal: 0,
             quantityVoting: 0,
             createAt: new Date(),
-            createdBy: firebaseApp.auth().currentUser.uid
+            createdBy: firebaseApp.auth().currentUser.uid,
           })
           .then(() => {
             setIsLoading(false);
             navigation.navigate("Events");
           })
-          .catch(error => {
+          .catch((error) => {
             setIsLoading(false);
             toastRef.current.show(
               "Error al subir el evento, intentelo más tarde"
@@ -117,17 +115,14 @@ export default function AddEventForm(props) {
     }
   };
 
-  const uploadImagesStorage = async imageArray => {
+  const uploadImagesStorage = async (imageArray) => {
     const imagesBlob = [];
     await Promise.all(
-      imageArray.map(async image => {
+      imageArray.map(async (image) => {
         const response = await fetch(image);
         const blob = await response.blob();
-        const ref = firebase
-          .storage()
-          .ref("events-images")
-          .child(uuid());
-        await ref.put(blob).then(result => {
+        const ref = firebase.storage().ref("events-images").child(uuid());
+        await ref.put(blob).then((result) => {
           imagesBlob.push(result.metadata.name);
         });
       })
@@ -154,19 +149,13 @@ export default function AddEventForm(props) {
         eventType={eventType}
         setEventStatus={setEventStatus}
         setEventCapacity={setEventCapacity}
-        setEventLocation={setEventLocation}
-        eventLocation={eventLocation}
         setEventCountry={setEventCountry}
+        setEventContactName={setEventContactName}
+        setEventContactPhone={setEventContactPhone}
+        setEventContactEmail={setEventContactEmail}
         setEventState={setEventState}
         setEventStreet={setEventStreet}
         setEventPostalCode={setEventPostalCode}
-        setIsVisibleMap={setIsVisibleMap}
-      />
-      <Map
-        isVisibleMap={isVisibleMap}
-        setIsVisibleMap={setIsVisibleMap}
-        setEventLocation={setEventLocation}
-        toastRef={toastRef}
       />
       <Button
         title="Crear nuevo evento"
@@ -185,68 +174,51 @@ function FormAdd(props) {
     setEventDateFin,
     eventDateInit,
     eventDateFin,
-    eventLocation,
     setEventType,
     eventType,
     setEventStatus,
     setEventCapacity,
-    setEventLocation,
     setEventCountry,
+    setEventContactName,
+    setEventContactPhone,
+    setEventContactEmail,
     setEventState,
     setEventStreet,
     setEventPostalCode,
-    setIsVisibleMap,
   } = props;
 
   return (
     <View style={styles.viewForm}>
-      <Card>
+      <Card containerStyle={styles.cards}>
         <View>
           <Text style={styles.txtHeadline} h4>
             Información
           </Text>
           <Input
             maxLength={70}
-            placeholder="Nombre del evento"
+            label="Nombre"
+            placeholder="nombre del evento..."
+            labelStyle={styles.inputLabel}
             containerStyle={styles.input}
-            onChange={e => setEventName(e.nativeEvent.text)}
+            onChange={(e) => setEventName(e.nativeEvent.text)}
           />
           <Input
             maxLength={500}
-            placeholder="Descripción"
+            labelStyle={styles.inputLabel}
+            label="Descripción"
+            placeholder="descripción del evento..."
             containerStyle={styles.textArea}
             multiline={true}
-            onChange={e => setEventDescription(e.nativeEvent.text)}
+            onChange={(e) => setEventDescription(e.nativeEvent.text)}
           />
         </View>
       </Card>
-      <Card>
+      <Card containerStyle={styles.cards}>
         <View style={styles.containerEventType}>
           <Text style={styles.txtHeadline} h4>
-            Otros datos
+            Fechas del evento
           </Text>
-          <Picker
-            mode={"dropdown"}
-            selectedValue={eventType == null ? "java" : eventType}
-            style={styles.pickEventType}
-            onValueChange={itemValue => setEventType(itemValue)}
-          >
-            <Picker.Item label="Recogida de basura" value="recogidas" />
-            <Picker.Item label="Talleres" value="talleres" />
-            <Picker.Item label="Charlas" value="charlas" />
-            <Picker.Item label="Ferias" value="ferias" />
-            <Picker.Item label="Manifestaciones" value="manifestaciones" />
-            <Picker.Item label="Reforestaciones" value="reforestaciones" />
-          </Picker>
-          <Divider style={{ backgroundColor: "grey", height: 1 }} />
-          <Input
-            maxLength={10}
-            placeholder="Aforo del evento"
-            containerStyle={styles.input}
-            keyboardType="numeric"
-            maxLength={1000000}
-            onChange={e => setEventCapacity(e.nativeEvent.text)}
-          />
+
           <Text style={styles.txtDateSelect}>Fecha inicial</Text>
           <DatePicker
             style={{ width: "100%" }}
@@ -263,14 +235,14 @@ function FormAdd(props) {
                 position: "absolute",
                 left: 0,
                 top: 4,
-                marginLeft: 0
+                marginLeft: 0,
               },
               dateInput: {
-                marginLeft: 36
-              }
+                marginLeft: 36,
+              },
               // ... You can check the source to find the other keys.
             }}
-            onDateChange={date => setEventDateInit(date)}
+            onDateChange={(date) => setEventDateInit(date)}
           />
           <Text style={styles.txtDateSelect}>Fecha final</Text>
           <DatePicker
@@ -288,136 +260,110 @@ function FormAdd(props) {
                 position: "absolute",
                 left: 0,
                 top: 4,
-                marginLeft: 0
+                marginLeft: 0,
               },
               dateInput: {
-                marginLeft: 36
-              }
+                marginLeft: 36,
+              },
             }}
-            onDateChange={date => setEventDateFin(date)}
+            onDateChange={(date) => setEventDateFin(date)}
           />
         </View>
       </Card>
-      <Card>
+      <Card containerStyle={styles.cards}>
+        <Text style={styles.txtHeadline} h4>
+          Características y contacto
+        </Text>
+        <Card containerStyle={styles.cardTypeEvent}>
+          <Text style={styles.inputLabelCustom}>Tipo de evento</Text>
+          <Picker
+            mode={"dropdown"}
+            selectedValue={eventType == null ? "java" : eventType}
+            onValueChange={(itemValue) => setEventType(itemValue)}
+          >
+            <Picker.Item label="Recogida de basura" value="recogidas" />
+            <Picker.Item label="Talleres" value="talleres" />
+            <Picker.Item label="Charlas" value="charlas" />
+            <Picker.Item label="Ferias" value="ferias" />
+            <Picker.Item label="Manifestaciones" value="manifestaciones" />
+            <Picker.Item label="Reforestaciones" value="reforestaciones" />
+          </Picker>
+        </Card>
+        <Input
+          maxLength={10}
+          labelStyle={styles.inputLabel}
+          label="Aforo del evento"
+          placeholder="total de personas..."
+          containerStyle={styles.input}
+          keyboardType="numeric"
+          maxLength={1000000}
+          onChange={(e) => setEventCapacity(e.nativeEvent.text)}
+        />
+        <Input
+          maxLength={100}
+          labelStyle={styles.inputLabel}
+          label="Persona de contacto..."
+          placeholder="nombre completo..."
+          containerStyle={styles.input}
+          onChange={(e) => setEventContactName(e.nativeEvent.text)}
+        />
+        <Input
+          maxLength={12}
+          labelStyle={styles.inputLabel}
+          label="Teléfono de contacto"
+          placeholder="teléfono móvil o fijo..."
+          keyboardType="numeric"
+          containerStyle={styles.input}
+          onChange={(e) => setEventContactPhone(e.nativeEvent.text)}
+        />
+        <Input
+          maxLength={35}
+          labelStyle={styles.inputLabel}
+          label="Email de contacto"
+          placeholder="correo electrónico..."
+          containerStyle={styles.input}
+          onChange={(e) => setEventContactEmail(e.nativeEvent.text)}
+        />
+      </Card>
+      <Card containerStyle={styles.cards}>
         <Text style={styles.txtHeadline} h4>
           Ubicación
         </Text>
-        <TouchableOpacity onPress={() => setIsVisibleMap(true)}>
-          <Input
-            placeholder={
-              eventLocation ? "Ubicación seleccionada" : "Seleccione ubicación"
-            }
-            placeholderTextColor={eventLocation ? "#2BA418" : "#000000"}
-            disabled={true}
-            rightIcon={{
-              type: "material-community",
-              name: "google-maps",
-              color: eventLocation ? "#2BA418" : "#c2c2c2",
-              onPress: () => setIsVisibleMap(true)
-            }}
-            containerStyle={styles.input}
-            onChange={e => setEventLocation(e.nativeEvent.text)}
-          />
-        </TouchableOpacity>
         <Input
           maxLength={30}
-          placeholder="País"
+          labelStyle={styles.inputLabel}
+          label="País"
+          placeholder="país..."
           containerStyle={styles.input}
-          onChange={e => setEventCountry(e.nativeEvent.text)}
+          onChange={(e) => setEventCountry(e.nativeEvent.text)}
         />
         <Input
           maxLength={30}
-          placeholder="Municipio"
+          labelStyle={styles.inputLabel}
+          label="Municipio"
+          placeholder="municipio..."
           containerStyle={styles.input}
-          onChange={e => setEventState(e.nativeEvent.text)}
+          onChange={(e) => setEventState(e.nativeEvent.text)}
         />
         <Input
           maxLength={30}
-          placeholder="Calle"
+          labelStyle={styles.inputLabel}
+          label="Calle"
+          placeholder="calle..."
           containerStyle={styles.input}
-          onChange={e => setEventStreet(e.nativeEvent.text)}
+          onChange={(e) => setEventStreet(e.nativeEvent.text)}
         />
         <Input
           maxLength={6}
-          placeholder="Código Postal"
+          labelStyle={styles.inputLabel}
+          label="Código postal"
+          placeholder="código postal..."
           containerStyle={styles.input}
           keyboardType="numeric"
-          onChange={e => setEventPostalCode(e.nativeEvent.text)}
+          onChange={(e) => setEventPostalCode(e.nativeEvent.text)}
         />
       </Card>
     </View>
-  );
-}
-
-function Map(props) {
-  const { isVisibleMap, setIsVisibleMap, setEventLocation, toastRef } = props;
-  const [location, setLocation] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Permissions.askAsync(Permissions.LOCATION);
-      if (status !== "granted") {
-        toastRef.current.show(
-          "Tienes que aceptar los permisos de localización para crear un evento.",
-          3000
-        );
-      } else {
-        let loc = await Location.getCurrentPositionAsync({});
-        setLocation({
-          latitude: loc.coords.latitude,
-          longitude: loc.coords.longitude,
-          latitudeDelta: 0.001 * 60,
-          longitudeDelta: 0.001 * 60
-        });
-      }
-    })();
-  }, []);
-
-  const confirmLocation = () => {
-    setEventLocation(location);
-    toastRef.current.show("Localización guardada correctamente");
-    setIsVisibleMap(false);
-  };
-
-  return (
-    <Modal isVisible={isVisibleMap} setIsVisible={setIsVisibleMap}>
-      <View>
-        {/*
-        {location && (
-          <MapView
-            style={styles.mapStyle}
-            initialRegion={location}
-            showsUserLocation={true}
-            onRegionChange={region => setLocation(region)}
-          >
-            <MapView.Marker
-              draggable
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-                longitudeDelta: location.longitudeDelta,
-                latitudeDelta: location.latitudeDelta
-              }}
-            />
-          </MapView>
-            */}
-        )}
-        <View style={styles.viewMapBtn}>
-          <Button
-            title="Guardar Ubicación"
-            onPress={confirmLocation}
-            containerStyle={styles.viewMapBtnContainerSave}
-            buttonStyle={styles.viewMapBtnSave}
-          />
-          <Button
-            title="Cancelar Ubicación"
-            onPress={() => setIsVisibleMap(false)}
-            containerStyle={styles.viewMapBtnContainerCancel}
-            buttonStyle={styles.viewMapBtnCancel}
-          />
-        </View>
-      </View>
-    </Modal>
   );
 }
 
@@ -432,11 +378,11 @@ function ImageEventFeatured(props) {
           style={{ width: widthScreen, height: 200 }}
         />
       ) : (
-          <Image
-            source={require("../../../assets/img/Noimage.png")}
-            style={{ width: widthScreen, height: 200 }}
-          />
-        )}
+        <Image
+          source={require("../../../assets/img/Noimage.png")}
+          style={{ width: widthScreen, height: 200 }}
+        />
+      )}
     </View>
   );
 }
@@ -458,7 +404,7 @@ function UploadImage(props) {
     } else {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
-        aspect: [4, 3]
+        aspect: [4, 3],
       });
 
       if (result.cancelled) {
@@ -472,7 +418,7 @@ function UploadImage(props) {
     }
   };
 
-  const removeImage = image => {
+  const removeImage = (image) => {
     const arrayImages = imagesSelected;
 
     Alert.alert(
@@ -481,15 +427,15 @@ function UploadImage(props) {
       [
         {
           text: "Cancelar",
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "Eliminar",
           onPress: () =>
             setImagesSelected(
-              arrayImages.filter(imageUrl => imageUrl !== image)
-            )
-        }
+              arrayImages.filter((imageUrl) => imageUrl !== image)
+            ),
+        },
       ],
       { cancelable: false }
     );
@@ -507,7 +453,7 @@ function UploadImage(props) {
         />
       )}
 
-      {imagesSelected.map(imageEvent => (
+      {imagesSelected.map((imageEvent) => (
         <Avatar
           key={imageEvent}
           onPress={() => removeImage(imageEvent)}
@@ -523,36 +469,45 @@ const styles = StyleSheet.create({
   viewPhoto: {
     alignItems: "center",
     height: 200,
-    marginBottom: 0
+    marginBottom: 0,
+  },
+  cardTypeEvent: {
+    width: "100%",
+    backgroundColor: "#F9F9F9",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#D5D5D5",
+    marginBottom: 20,
+    marginLeft: 0,
   },
   viewBtn: {
     marginLeft: 20,
     marginRight: 20,
     marginTop: 15,
-    marginBottom: 15
+    marginBottom: 15,
   },
   viewImage: {
     flexDirection: "row",
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 30
+    marginTop: 30,
   },
   viewMapBtn: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 10
+    marginTop: 10,
   },
   viewMapBtnContainerSave: {
-    paddingRight: 5
+    paddingRight: 5,
   },
   viewMapBtnContainerCancel: {
-    paddingLeft: 5
+    paddingLeft: 5,
   },
   viewMapBtnSave: {
-    backgroundColor: "#2BA418"
+    backgroundColor: "#2BA418",
   },
   viewMapBtnCancel: {
-    backgroundColor: "#b2b2b2"
+    backgroundColor: "#b2b2b2",
   },
   containerIcon: {
     alignItems: "center",
@@ -560,37 +515,52 @@ const styles = StyleSheet.create({
     marginRight: 5,
     height: 70,
     width: 70,
-    backgroundColor: "#d0d0d0"
+    backgroundColor: "#d0d0d0",
   },
   miniatureStyle: {
     width: 70,
     height: 70,
     marginRight: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   viewForm: {
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
   },
   input: {
-    marginBottom: 10
+    marginBottom: 20,
+    backgroundColor: "#F9F9F9",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#D5D5D5",
+  },
+  inputLabel: {
+    color: "#2BA418",
+  },
+  inputLabelCustom: {
+    color: "#2BA418",
+    fontWeight: "bold",
   },
   inputMapDisabled: {
-    color: "red"
+    color: "red",
   },
   textArea: {
-    height: 100,
+    backgroundColor: "#F9F9F9",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#D5D5D5",
     width: "100%",
     padding: 0,
-    margin: 0
+    margin: 0,
   },
   txtHeadline: {
     textAlign: "center",
-    color: "#2BA418"
+    color: "#2BA418",
+    marginBottom: 10,
   },
   txtDateSelect: {
     marginBottom: 10,
-    marginTop: 10
+    marginTop: 10,
   },
   btnCreateEvent: {
     backgroundColor: "#2BA418",
@@ -600,21 +570,20 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 15,
     marginLeft: 15,
-    marginRight: 15
+    marginRight: 15,
   },
   btnDate: {
     backgroundColor: "#b2b2b2",
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#e7e7e7",
-    marginBottom: 10
-  },
-  pickEventType: {
-    height: 50,
-    width: "100%"
+    marginBottom: 10,
   },
   mapStyle: {
     width: "100%",
-    height: "90%"
-  }
+    height: "90%",
+  },
+  cards: {
+    borderRadius: 20,
+  },
 });

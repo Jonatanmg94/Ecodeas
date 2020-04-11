@@ -18,7 +18,7 @@ export default function listPosts(props) {
   const limitPosts = 8;
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(userInfo => {
+    firebase.auth().onAuthStateChanged((userInfo) => {
       setUser(userInfo);
     });
   }, []);
@@ -27,7 +27,7 @@ export default function listPosts(props) {
     db.collection("posts")
       .where(postsCategory, "==", true)
       .get()
-      .then(snap => {
+      .then((snap) => {
         setTotalPosts(snap.size);
       });
     (async () => {
@@ -36,9 +36,9 @@ export default function listPosts(props) {
         .collection("posts")
         .where(postsCategory, "==", true)
         .limit(limitPosts);
-      await posts.get().then(response => {
+      await posts.get().then((response) => {
         setStarPosts(response.docs[response.docs.length - 1]);
-        response.forEach(doc => {
+        response.forEach((doc) => {
           let post = doc.data();
           post.id = doc.id;
           resultPosts.push({ post });
@@ -58,13 +58,13 @@ export default function listPosts(props) {
 
       .limit(limitPosts);
 
-    await postsDb.get().then(response => {
+    await postsDb.get().then((response) => {
       if (response.docs.length > 0) {
         setStarPosts(response.docs[response.docs.length - 1]);
       } else {
         setIsLoading(false);
       }
-      response.forEach(doc => {
+      response.forEach((doc) => {
         let post = doc.data();
         post.id = doc.id;
         resultPosts.push({ post });
@@ -88,17 +88,17 @@ export default function listPosts(props) {
 
 const styles = StyleSheet.create({
   viewBody: {
-    flex: 1
+    flex: 1,
   },
   image: {
     height: 80,
     width: "100%",
     marginBottom: 10,
-    tintColor: "#969696"
+    tintColor: "#969696",
   },
   txtGridTitles: {
     fontWeight: "bold",
     color: "#2BA418",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });

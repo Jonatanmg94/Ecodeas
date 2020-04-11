@@ -12,7 +12,7 @@ export default function ListReviews(props) {
   const [reviewsReload, setReviewsReload] = useState(false);
   const [userLogged, setUserLogged] = useState(false);
 
-  firebase.auth().onAuthStateChanged(user => {
+  firebase.auth().onAuthStateChanged((user) => {
     user ? setUserLogged(true) : setUserLogged(false);
   });
 
@@ -24,15 +24,15 @@ export default function ListReviews(props) {
       db.collection("reviews")
         .where("idEvent", "==", idEvent)
         .get()
-        .then(response => {
-          response.forEach(doc => {
+        .then((response) => {
+          response.forEach((doc) => {
             const review = doc.data();
             resultReviews.push(doc.data());
             arrayRating.push(doc.data().rating);
           });
 
           let numSum = 0;
-          arrayRating.map(value => {
+          arrayRating.map((value) => {
             numSum = numSum + value;
           });
           const countRating = arrayRating.length;
@@ -53,44 +53,44 @@ export default function ListReviews(props) {
         <Button
           buttonStyle={styles.btnAddReview}
           titleStyle={styles.btnTitleAddReview}
-          title="Escribir una opinión"
+          title="Escribir una valoración"
           icon={{
             type: "material-community",
             name: "square-edit-outline",
-            color: "#00a680"
+            color: "#00a680",
           }}
           onPress={() =>
             navigation.navigate("AddReviewEvent", {
               idEvent: idEvent,
-              setReviewsReload: setReviewsReload
+              setReviewsReload: setReviewsReload,
             })
           }
         />
       ) : (
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{ textAlign: "center", color: "#2BA418", padding: 10 }}
-              onPress={() => navigation.navigate("Login")}
-            >
-              Para escribir un comentario es necesario estar logeado
+        <View style={{ flex: 1 }}>
+          <Text
+            style={{ textAlign: "center", color: "#2BA418", padding: 10 }}
+            onPress={() => navigation.navigate("Login")}
+          >
+            Para escribir un comentario es necesario estar logeado
           </Text>
-            <Text
-              style={{
-                fontWeight: "bold",
-                textAlign: "center",
-                color: "#2BA418",
-                paddingBottom: 10
-              }}
-              onPress={() => navigation.navigate("Login")}
-            >
-              pulsa AQUI para iniciar sesión
+          <Text
+            style={{
+              fontWeight: "bold",
+              textAlign: "center",
+              color: "#2BA418",
+              paddingBottom: 10,
+            }}
+            onPress={() => navigation.navigate("Login")}
+          >
+            pulsa AQUI para iniciar sesión
           </Text>
-          </View>
-        )}
+        </View>
+      )}
 
       <FlatList
         data={reviews}
-        renderItem={review => <Review review={review} />}
+        renderItem={(review) => <Review review={review} />}
         keyExtractor={(item, index) => index.toString()}
       />
     </View>
@@ -110,7 +110,7 @@ function Review(props) {
           source={{
             uri: avatarUser
               ? avatarUser
-              : "https://firebasestorage.googleapis.com/v0/b/ecodeas-5142d.appspot.com/o/UsersAvatars%2FDefaultAvatar%2Favatar.png?alt=media&token=5dbc8a9b-6ffe-4856-935e-03b774c383cf"
+              : "https://firebasestorage.googleapis.com/v0/b/ecodeas-5142d.appspot.com/o/UsersAvatars%2FDefaultAvatar%2Favatar.png?alt=media&token=5dbc8a9b-6ffe-4856-935e-03b774c383cf",
           }}
         />
       </View>
@@ -133,39 +133,39 @@ const styles = StyleSheet.create({
   btnAddReview: {
     backgroundColor: "transparent",
     paddingTop: 15,
-    paddingBottom: 15
+    paddingBottom: 15,
   },
   btnTitleAddReview: {
-    color: "#00a680"
+    color: "#00a680",
   },
   viewReview: {
     flexDirection: "row",
     margin: 10,
     paddingBottom: 20,
     borderBottomColor: "#e3e3e3",
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   viewImageAvatar: {
-    marginRight: 15
+    marginRight: 15,
   },
   imageAvatarUser: {
     width: 50,
-    height: 50
+    height: 50,
   },
   viewInfo: {
     flex: 1,
     alignItems: "flex-start",
     backgroundColor: "white",
     padding: 15,
-    borderRadius: 10
+    borderRadius: 10,
   },
   reviewTitle: {
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   reviewText: {
     paddingTop: 2,
     color: "grey",
-    marginBottom: 5
+    marginBottom: 5,
   },
   reviewDate: {
     marginTop: 5,
@@ -173,6 +173,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     position: "absolute",
     right: 10,
-    bottom: 10
-  }
+    bottom: 10,
+  },
 });

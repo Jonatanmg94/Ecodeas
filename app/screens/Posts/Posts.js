@@ -27,7 +27,7 @@ export default function Posts(props) {
               });
             }}
           >
-            <Card>
+            <Card containerStyle={styles.cards}>
               <Image
                 source={require("../../../assets/img/madera.png")}
                 style={styles.image}
@@ -44,7 +44,7 @@ export default function Posts(props) {
               });
             }}
           >
-            <Card>
+            <Card  containerStyle={styles.cards}>
               <Image
                 source={require("../../../assets/img/metales.png")}
                 style={styles.image}
@@ -60,7 +60,7 @@ export default function Posts(props) {
               });
             }}
           >
-            <Card>
+            <Card  containerStyle={styles.cards}>
               <Image
                 source={require("../../../assets/img/plastico.png")}
                 style={styles.image}
@@ -78,7 +78,7 @@ export default function Posts(props) {
               });
             }}
           >
-            <Card>
+            <Card  containerStyle={styles.cards}>
               <Image
                 source={require("../../../assets/img/textil.png")}
                 style={styles.image}
@@ -94,7 +94,7 @@ export default function Posts(props) {
               });
             }}
           >
-            <Card>
+            <Card  containerStyle={styles.cards}>
               <Image
                 source={require("../../../assets/img/papel.png")}
                 style={styles.image}
@@ -111,7 +111,7 @@ export default function Posts(props) {
               });
             }}
           >
-            <Card>
+            <Card  containerStyle={styles.cards}>
               <Image
                 source={require("../../../assets/img/cristal.png")}
                 style={styles.image}
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   image: {
-    height: 80,
+    height: 70,
     width: "100%",
     marginBottom: 10,
     tintColor: "#969696"
@@ -152,5 +152,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#2BA418",
     textAlign: "center"
+  },
+  cards: {
+    borderRadius: 20,
   }
 });

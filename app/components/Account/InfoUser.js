@@ -22,7 +22,7 @@ function InfoUser(props) {
     toastRef,
     setIsLoading,
     setTextLoading,
-    navigation
+    navigation,
   } = props;
 
   const changeAvatar = async () => {
@@ -40,7 +40,7 @@ function InfoUser(props) {
     } else {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
-        aspect: [4, 3]
+        aspect: [4, 3],
       });
 
       if (result.cancelled) {
@@ -60,21 +60,18 @@ function InfoUser(props) {
     const response = await fetch(uri);
     const blob = await response.blob();
 
-    const ref = firebase
-      .storage()
-      .ref()
-      .child(`UsersAvatars/${nameImage}`);
+    const ref = firebase.storage().ref().child(`UsersAvatars/${nameImage}`);
     return ref.put(blob);
   };
 
-  const updatePhotoUrl = uid => {
+  const updatePhotoUrl = (uid) => {
     firebase
       .storage()
       .ref(`UsersAvatars/${uid}`)
       .getDownloadURL()
-      .then(async result => {
+      .then(async (result) => {
         const update = {
-          photoURL: result
+          photoURL: result,
         };
         await firebase.auth().currentUser.updateProfile(update);
         setReloadData(true);
@@ -98,7 +95,7 @@ function InfoUser(props) {
       iconColorLeft: "#A3A3A3",
       iconNameRight: "chevron-right",
       iconColorRight: "#A3A3A3",
-      onPress: () => selectedComponent("displayName")
+      onPress: () => selectedComponent("displayName"),
     },
     {
       title: "Cambiar Email",
@@ -107,7 +104,7 @@ function InfoUser(props) {
       iconColorLeft: "#A3A3A3",
       iconNameRight: "chevron-right",
       iconColorRight: "#A3A3A3",
-      onPress: () => selectedComponent("email")
+      onPress: () => selectedComponent("email"),
     },
     {
       title: "Cambiar Contraseña",
@@ -116,15 +113,15 @@ function InfoUser(props) {
       iconColorLeft: "#A3A3A3",
       iconNameRight: "chevron-right",
       iconColorRight: "#A3A3A3",
-      onPress: () => selectedComponent("password")
-    }
+      onPress: () => selectedComponent("password"),
+    },
   ];
 
   const RefreshAndGoBack = () => {
     navigation.state.params.setReloadData("true"), navigation.goBack();
   };
 
-  const selectedComponent = key => {
+  const selectedComponent = (key) => {
     switch (key) {
       case "displayName":
         setRenderComponent(
@@ -178,11 +175,11 @@ function InfoUser(props) {
         source={{
           uri: photoURL
             ? photoURL + "?type=large"
-            : "https://firebasestorage.googleapis.com/v0/b/ecodeas-5142d.appspot.com/o/UsersAvatars%2FDefaultAvatar%2Favatar.png?alt=media&token=607d825f-80cc-4d73-b70e-637487b45a02"
+            : "https://firebasestorage.googleapis.com/v0/b/ecodeas-5142d.appspot.com/o/UsersAvatars%2FDefaultAvatar%2Favatar.png?alt=media&token=607d825f-80cc-4d73-b70e-637487b45a02",
         }}
       />
       <View style={styles.viewUserName}>
-        <Card containerStyle={styles.cardUserData}>
+        <Card containerStyle={styles.cards}>
           <Text style={styles.displayName}>
             {displayName ? displayName : "Usuario anónimo"}
           </Text>
@@ -195,12 +192,12 @@ function InfoUser(props) {
                 leftIcon={{
                   type: menu.iconType,
                   name: menu.iconNameLeft,
-                  color: menu.iconColorLeft
+                  color: menu.iconColorLeft,
                 }}
                 rightIcon={{
                   type: menu.iconType,
                   name: menu.iconNameRight,
-                  color: menu.iconColorRight
+                  color: menu.iconColorRight,
                 }}
                 onPress={menu.onPress}
                 containerStyle={styles.menuItem}
@@ -208,7 +205,7 @@ function InfoUser(props) {
             ))}
           </View>
           <Button
-            title="Volver a mi cuenta"
+            title="Volver atras"
             buttonStyle={styles.btnStyle}
             containerStyle={styles.btnContainer}
             onPress={RefreshAndGoBack}
@@ -231,43 +228,48 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 30,
-    paddingBottom: 30
+    paddingBottom: 30,
   },
   userInfoAvatar: {
     borderWidth: 5,
     borderColor: "#CDCDCD",
-    borderStyle: "solid"
+    borderStyle: "solid",
   },
   displayName: {
     textAlign: "center",
     fontSize: 18,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   displayEmail: {
     textAlign: "center",
     fontSize: 14,
-    paddingBottom: 10
+    paddingBottom: 20,
   },
   viewUserName: {
     justifyContent: "center",
     alignItems: "center",
-    width: "95%"
-  },
-  cardUserData: {
     width: "95%",
-    paddingBottom: 10
+  },
+  cards: {
+    width: "95%",
+    paddingBottom: 10,
+    borderRadius: 10,
   },
   menuItem: {
     borderBottomWidth: 1,
     borderBottomColor: "#e3e3e3",
     backgroundColor: "#EBEBEB",
-    paddingBottom: 10
+    paddingBottom: 10,
+    marginBottom: 10,
+    borderRadius: 10,
   },
   btnStyle: {
-    backgroundColor: "#2BA418"
+    backgroundColor: "#2BA418",
+    borderRadius: 10,
   },
   btnContainer: {
     width: "100%",
-    paddingTop: 10
-  }
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
 });

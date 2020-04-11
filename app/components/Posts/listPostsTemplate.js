@@ -6,7 +6,7 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  YellowBox
+  YellowBox,
 } from "react-native";
 import { Image, Icon, Card } from "react-native-elements";
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -21,18 +21,18 @@ export default function ListPostsTemplate(props) {
       {posts ? (
         <FlatList
           data={posts}
-          renderItem={post => <Post post={post} navigation={navigation} />}
+          renderItem={(post) => <Post post={post} navigation={navigation} />}
           keyExtractor={(item, index) => index.toString()}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
           ListFooterComponent={<FooterList isLoading={isLoading} />}
         />
       ) : (
-          <View style={styles.loadingEvents}>
-            <ActivityIndicator size="large" />
-            <Text>Cargando posts...</Text>
-          </View>
-        )}
+        <View style={styles.loadingEvents}>
+          <ActivityIndicator size="large" />
+          <Text>Cargando posts...</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -48,15 +48,17 @@ function Post(props) {
       .storage()
       .ref(`posts-images/${image}`)
       .getDownloadURL()
-      .then(result => {
+      .then((result) => {
         setImagePost(result);
       });
   });
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Post", { post: post.item.post })}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate("Post", { post: post.item.post })}
+    >
       <View style={styles.viewEvent}>
-        <Card>
+        <Card containerStyle={styles.cards}>
           <Grid>
             <Col style={{ width: 80 }}>
               <View style={styles.viewEventImage}>
@@ -111,40 +113,43 @@ function FooterList(props) {
 const styles = StyleSheet.create({
   loadingEvents: {
     marginTop: 20,
-    alignItems: "center"
+    alignItems: "center",
   },
   viewEventTitle: {
     marginLeft: 10,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   viewEventContent: {
     marginLeft: 10,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   viewEventDescription: {
     marginLeft: 10,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   imageEvent: {
     width: 80,
-    height: 80
+    height: 80,
   },
   eventName: {
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   eventDescription: {
-    fontWeight: "300"
+    fontWeight: "300",
   },
   viewUbication: {
-    marginRight: 10
+    marginRight: 10,
   },
   loadingEvents: {
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   notFoundEvents: {
     marginTop: 10,
     marginBottom: 20,
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
+  cards: {
+    borderRadius: 10,
+  },
 });

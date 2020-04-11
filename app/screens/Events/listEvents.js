@@ -19,7 +19,7 @@ export default function listEvents(props) {
   const limitEvents = 8;
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(userInfo => {
+    firebase.auth().onAuthStateChanged((userInfo) => {
       setUser(userInfo);
     });
   }, []);
@@ -28,7 +28,7 @@ export default function listEvents(props) {
     db.collection("events")
       .where("type", "==", eventsCategory)
       .get()
-      .then(snap => {
+      .then((snap) => {
         setTotalEvents(snap.size);
       });
     (async () => {
@@ -37,9 +37,9 @@ export default function listEvents(props) {
         .collection("events")
         .where("type", "==", eventsCategory)
         .limit(limitEvents);
-      await events.get().then(response => {
+      await events.get().then((response) => {
         setStarEvents(response.docs[response.docs.length - 1]);
-        response.forEach(doc => {
+        response.forEach((doc) => {
           let event = doc.data();
           event.id = doc.id;
           resultEvents.push({ event });
@@ -58,13 +58,13 @@ export default function listEvents(props) {
       .startAfter(starEvents.data().createAt)
       .limit(limitEvents);
 
-    await eventsDb.get().then(response => {
+    await eventsDb.get().then((response) => {
       if (response.docs.length > 0) {
         setStarEvents(response.docs[response.docs.length - 1]);
       } else {
         setIsLoading(false);
       }
-      response.forEach(doc => {
+      response.forEach((doc) => {
         let event = doc.data();
         event.id = doc.id;
         resultEvents.push({ event });
@@ -88,17 +88,17 @@ export default function listEvents(props) {
 
 const styles = StyleSheet.create({
   viewBody: {
-    flex: 1
+    flex: 1,
   },
   image: {
     height: 80,
     width: "100%",
     marginBottom: 10,
-    tintColor: "#969696"
+    tintColor: "#969696",
   },
   txtGridTitles: {
     fontWeight: "bold",
     color: "#2BA418",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });

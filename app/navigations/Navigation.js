@@ -22,8 +22,8 @@ const NavigationStacks = createBottomTabNavigator(
             size={22}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Ranking: {
       screen: RankingScreenStacks,
@@ -36,8 +36,8 @@ const NavigationStacks = createBottomTabNavigator(
             size={22}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Posts: {
       screen: PostsScreenStacks,
@@ -50,8 +50,8 @@ const NavigationStacks = createBottomTabNavigator(
             size={22}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Favorites: {
       screen: FavoritesScreenStacks,
@@ -64,8 +64,8 @@ const NavigationStacks = createBottomTabNavigator(
             size={22}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Events: {
       screen: EventsScreenStacks,
@@ -78,8 +78,8 @@ const NavigationStacks = createBottomTabNavigator(
             size={22}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     MyAccount: {
       screen: AccountScreenStacks,
@@ -92,9 +92,9 @@ const NavigationStacks = createBottomTabNavigator(
             size={22}
             color={tintColor}
           />
-        )
-      })
-    }
+        ),
+      }),
+    },
   },
   {
     initialRouteName: "Events",
@@ -104,9 +104,9 @@ const NavigationStacks = createBottomTabNavigator(
       activeTintColor: "#2BA418",
       labelStyle: {
         fontSize: 12,
-        fontWeight: "700"
-      }
-    }
+        fontWeight: "700",
+      },
+    },
   }
 );
 

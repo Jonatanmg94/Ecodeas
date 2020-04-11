@@ -16,7 +16,7 @@ export default function Register() {
         resizeMode="contain"
       />
       <View style={styles.viewForm}>
-        <Card title="Crear cuenta" style={styles.cardRegister}>
+        <Card title="Registrar cuenta" containerStyle={styles.cards}>
           <RegisterForm toastRef={toastRef} />
         </Card>
       </View>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 5
   },
-  cardRegister: {
-    borderRadius: 80
+  cards: {
+    borderRadius: 20,
   }
 });

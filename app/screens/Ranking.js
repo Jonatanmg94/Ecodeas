@@ -9,38 +9,38 @@ import "firebase/firestore";
 const db = firebase.firestore(firebaseApp);
 
 export default function Ranking(props) {
-    const { navigation } = props;
-    const [posts, setPosts] = useState([]);
-    const toastRef = useRef();
+  const { navigation } = props;
+  const [posts, setPosts] = useState([]);
+  const toastRef = useRef();
 
-    useEffect(() => {
-        (async () => {
-            db.collection("posts")
-                .orderBy("rating", "desc")
-                .limit(5)
-                .get()
-                .then(response => {
-                    const postsArray = [];
-                    response.forEach(doc => {
-                        let post = doc.data();
-                        post.id = doc.id;
-                        postsArray.push(post);
-                    });
-                    setPosts(postsArray);
-                })
-                .catch(() => {
-                    toastRef.current.show(
-                        "Error al cargar el Ranking, intentlo más tarde",
-                        3000
-                    );
-                });
-        })();
-    }, []);
+  useEffect(() => {
+    (async () => {
+      db.collection("posts")
+        .orderBy("rating", "desc")
+        .limit(5)
+        .get()
+        .then((response) => {
+          const postsArray = [];
+          response.forEach((doc) => {
+            let post = doc.data();
+            post.id = doc.id;
+            postsArray.push(post);
+          });
+          setPosts(postsArray);
+        })
+        .catch(() => {
+          toastRef.current.show(
+            "Error al cargar el Ranking, intentlo más tarde",
+            3000
+          );
+        });
+    })();
+  }, []);
 
-    return (
-        <View>
-            <ListTopPosts posts={posts} navigation={navigation} />
-            <Toast ref={toastRef} position="center" opacity={0.7} />
-        </View>
-    );
+  return (
+    <View>
+      <ListTopPosts posts={posts} navigation={navigation} />
+      <Toast ref={toastRef} position="center" opacity={0.7} />
+    </View>
+  );
 }

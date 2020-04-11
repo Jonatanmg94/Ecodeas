@@ -15,8 +15,9 @@ function UserGuest(props) {
       />
       <Text style={styles.title}>Súmate a nuestra comunidad</Text>
       <Text style={styles.description}>
-        Con tu cuenta podrás crear nuevos posts y eventos, además de poder publicar opiniones en ellos.
-        Regístrate ya para comenzar a cambiar tu entorno con Ecodeas.
+        Con tu cuenta podrás crear nuevos posts y eventos, además de poder
+        publicar opiniones en ellos. Regístrate ya para comenzar a cambiar tu
+        entorno con Ecodeas.
       </Text>
       <Text style={styles.description}>Regístrate ya o inicia sesión.</Text>
       <View style={styles.viewBtn}>
@@ -36,33 +37,33 @@ export default withNavigation(UserGuest);
 const styles = StyleSheet.create({
   viewBody: {
     marginLeft: 20,
-    marginRight: 20
+    marginRight: 20,
   },
   image: {
     height: 300,
     width: "100%",
-    marginBottom: 10
+    marginBottom: 10,
   },
   title: {
     fontWeight: "bold",
     fontSize: 19,
     marginBottom: 20,
-    textAlign: "center"
+    textAlign: "center",
   },
   description: {
     fontSize: 12,
     marginBottom: 20,
-    textAlign: "center"
+    textAlign: "center",
   },
   viewBtn: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
   btnStyle: {
     backgroundColor: "#2BA418",
-    borderRadius: 10
+    borderRadius: 10,
   },
   btnContainer: {
-    width: "70%"
-  }
+    width: "70%",
+  },
 });

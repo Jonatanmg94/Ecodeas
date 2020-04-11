@@ -22,18 +22,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderColor: "#2BA418",
     borderWidth: 2,
-    borderRadius: 100
+    borderRadius: 100,
   },
   view: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   text: {
     textAlign: "center",
     color: "#2BA418",
     textTransform: "uppercase",
     marginTop: 20,
-    fontWeight: "700"
-  }
+    fontWeight: "700",
+  },
 });

@@ -13,12 +13,12 @@ const AccountScreenStacks = createStackNavigator({
       title: "Mi Cuenta",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   Login: {
     screen: LoginScreen,
@@ -26,12 +26,12 @@ const AccountScreenStacks = createStackNavigator({
       title: "Iniciar sesión",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   Register: {
     screen: RegisterScreen,
@@ -39,12 +39,12 @@ const AccountScreenStacks = createStackNavigator({
       title: "Registro",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   MyAccountSettings: {
     screen: MyAccountSettingsScreen,
@@ -52,13 +52,13 @@ const AccountScreenStacks = createStackNavigator({
       title: "Editar cuenta",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
-  }
+        fontWeight: "bold",
+      },
+    }),
+  },
 });
 
 export default AccountScreenStacks;

@@ -16,7 +16,7 @@ export default function CarouselImages(props) {
       pageIndicatorStyle={styles.indicator}
       activePageIndicatorStyle={styles.indicatorActive}
     >
-      {arrayImages.map(urlImage => (
+      {arrayImages.map((urlImage) => (
         <View key={urlImage}>
           <Image style={{ width, height }} source={{ uri: urlImage }} />
         </View>
@@ -27,9 +27,9 @@ export default function CarouselImages(props) {
 
 const styles = StyleSheet.create({
   indicator: {
-    backgroundColor: "#00a680"
+    backgroundColor: "#00a680",
   },
   indicatorActive: {
-    backgroundColor: "#00ffc5"
-  }
+    backgroundColor: "#00ffc5",
+  },
 });

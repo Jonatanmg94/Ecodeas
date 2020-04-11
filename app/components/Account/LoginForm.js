@@ -38,9 +38,10 @@ function LoginForm(props) {
   return (
     <View style={styles.formContainer}>
       <Input
+        maxLength={100}
         placeholder="Correo electrónico"
         containerStyle={styles.inputForm}
-        onChange={e => setEmail(e.nativeEvent.text)}
+        onChange={(e) => setEmail(e.nativeEvent.text)}
         rightIcon={
           <Icon
             type="material-community"
@@ -50,9 +51,10 @@ function LoginForm(props) {
         }
       />
       <Input
+        maxLength={100}
         placeholder="Contraseña"
         containerStyle={styles.inputForm}
-        onChange={e => setPassword(e.nativeEvent.text)}
+        onChange={(e) => setPassword(e.nativeEvent.text)}
         secureTextEntry={hidePassword}
         password={true}
         rightIcon={
@@ -82,22 +84,23 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   inputForm: {
     width: "100%",
     marginTop: 5,
-    marginBottom: 19
+    marginBottom: 19,
   },
   btnContainerLogin: {
     marginTop: 10,
-    width: "95%"
+    width: "95%",
   },
   btnLogin: {
     backgroundColor: "#2BA418",
-    borderRadius: 10
+    borderRadius: 10,
+    marginBottom: 10,
   },
   iconRight: {
-    color: "#c1c1c1"
-  }
+    color: "#c1c1c1",
+  },
 });

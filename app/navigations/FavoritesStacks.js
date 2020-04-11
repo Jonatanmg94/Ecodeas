@@ -8,13 +8,13 @@ const FavoriteScreenStacks = createStackNavigator({
       title: "Eventos favoritos",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
-  }
+        fontWeight: "bold",
+      },
+    }),
+  },
 });
 
 export default FavoriteScreenStacks;

@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Input, Button } from "react-native-elements";
+import { View, StyleSheet } from "react-native";
+import { Input, Button, Text } from "react-native-elements";
 import * as firebase from "firebase";
 
 export default function ChangeDisplayNameForm(props) {
-  const { displayName, setIsVisibleModal, setReloadData, toastRef, navigation } = props;
+  const {
+    displayName,
+    setIsVisibleModal,
+    setReloadData,
+    toastRef,
+    navigation,
+  } = props;
   const [newDisplayName, setNewDisplayName] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +22,7 @@ export default function ChangeDisplayNameForm(props) {
     } else {
       setIsLoading(true);
       const update = {
-        displayName: newDisplayName
+        displayName: newDisplayName,
       };
       firebase
         .auth()
@@ -36,15 +42,19 @@ export default function ChangeDisplayNameForm(props) {
 
   return (
     <View style={styles.view}>
+      <Text style={styles.txtHeadline} h4>
+        Cambiar nombre
+      </Text>
       <Input
+        maxLength={80}
         placeholder="Nombre"
         containerStyle={styles.input}
         defaultValue={displayName && displayName}
-        onChange={e => setNewDisplayName(e.nativeEvent.text)}
+        onChange={(e) => setNewDisplayName(e.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
           name: "account-circle-outline",
-          color: "#C2C2C2"
+          color: "#C2C2C2",
         }}
         errorMessage={error}
       />
@@ -63,16 +73,22 @@ const styles = StyleSheet.create({
   view: {
     alignItems: "center",
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   input: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   btnContainer: {
     marginTop: 20,
-    width: "100%"
+    width: "100%",
+  },
+  txtHeadline: {
+    textAlign: "center",
+    color: "#2BA418",
+    marginBottom: 10,
   },
   btnChange: {
-    backgroundColor: "#000000"
-  }
+    backgroundColor: "#000000",
+    borderRadius: 10,
+  },
 });

@@ -10,12 +10,12 @@ const SearchScreenStacks = createStackNavigator({
       title: "Búsquedas",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   SearchEvents: {
     screen: SearchEventsScreen,
@@ -23,12 +23,12 @@ const SearchScreenStacks = createStackNavigator({
       title: "Buscar eventos",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   SearchPosts: {
     screen: SearchPostsScreen,
@@ -36,13 +36,13 @@ const SearchScreenStacks = createStackNavigator({
       title: "Buscar posts",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
-  }
+        fontWeight: "bold",
+      },
+    }),
+  },
 });
 
 export default SearchScreenStacks;

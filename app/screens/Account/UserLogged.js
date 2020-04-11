@@ -40,7 +40,7 @@ function UserLogged(props) {
 
   return (
     <View>
-      <Card>
+      <Card containerStyle={styles.cards}>
         <UserProfile
           userProfile={userProfile}
           setReloadData={setReloadData}
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   },
   btnLogin: {
     backgroundColor: "#2BA418",
-    borderRadius: 10
+    borderRadius: 10,
+    marginBottom: 20
   },
   btnContainerEditProfile: {
     width: "100%",
@@ -89,5 +90,8 @@ const styles = StyleSheet.create({
   btnEditProfile: {
     backgroundColor: "#7E7E7E",
     borderRadius: 10
+  },
+  cards: {
+    borderRadius: 20,
   }
 });

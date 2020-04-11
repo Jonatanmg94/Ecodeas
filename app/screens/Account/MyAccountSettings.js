@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
   logo: {
     width: "100%",
     height: 150,
-    marginTop: 30
-  }
+    marginTop: 30,
+  },
 });

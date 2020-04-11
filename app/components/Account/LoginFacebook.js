@@ -17,9 +17,9 @@ export default function LoginFacebook(props) {
         token,
         expires,
         permissions,
-        declinedPermissions
+        declinedPermissions,
       } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: [FacebookApi.permissions]
+        permissions: [FacebookApi.permissions],
       });
       if (type === "success") {
         setIsLoading(true);

@@ -6,7 +6,7 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import { Image, Icon, Button } from "react-native-elements";
 import Loading from "../components/Loading";
@@ -25,7 +25,7 @@ export default function Favorites(props) {
   const [userLogged, setUserLogged] = useState(false);
   const toastRef = useRef();
 
-  firebase.auth().onAuthStateChanged(user => {
+  firebase.auth().onAuthStateChanged((user) => {
     user ? setUserLogged(true) : setUserLogged(false);
   });
 
@@ -35,15 +35,15 @@ export default function Favorites(props) {
       db.collection("events-favorites")
         .where("idUser", "==", idUser)
         .get()
-        .then(response => {
+        .then((response) => {
           const idEventsArray = [];
-          response.forEach(doc => {
+          response.forEach((doc) => {
             idEventsArray.push(doc.data().idEvent);
           });
 
-          getDataEvents(idEventsArray).then(response => {
+          getDataEvents(idEventsArray).then((response) => {
             const events = [];
-            response.forEach(doc => {
+            response.forEach((doc) => {
               let event = doc.data();
               event.id = doc.id;
               events.push(event);
@@ -55,13 +55,10 @@ export default function Favorites(props) {
     setReloadEvents(false);
   }, [reloadEvents]);
 
-  const getDataEvents = idEventsArray => {
+  const getDataEvents = (idEventsArray) => {
     const arrayEvents = [];
-    idEventsArray.forEach(idEvent => {
-      const result = db
-        .collection("events")
-        .doc(idEvent)
-        .get();
+    idEventsArray.forEach((idEvent) => {
+      const result = db.collection("events").doc(idEvent).get();
       arrayEvents.push(result);
     });
     return Promise.all(arrayEvents);
@@ -83,7 +80,7 @@ export default function Favorites(props) {
       {events ? (
         <FlatList
           data={events}
-          renderItem={event => (
+          renderItem={(event) => (
             <Event
               event={event}
               navigation={navigation}
@@ -95,11 +92,11 @@ export default function Favorites(props) {
           keyExtractor={(item, index) => index.toString()}
         />
       ) : (
-          <View style={styles.loaderEvents}>
-            <ActivityIndicator size="large" />
-            <Text>Cargando eventos</Text>
-          </View>
-        )}
+        <View style={styles.loaderEvents}>
+          <ActivityIndicator size="large" />
+          <Text>Cargando eventos</Text>
+        </View>
+      )}
       <Toast ref={toastRef} position="center" opacity={1} />
       <Loading text="Eliminando Evento" isVisible={isVisibleLoding} />
     </View>
@@ -112,7 +109,7 @@ function Event(props) {
     navigation,
     setIsVisibleLoading,
     setReloadEvents,
-    toastRef
+    toastRef,
   } = props;
   const { id, name, images } = event.item;
   const [imageEvent, setImageEvent] = useState(null);
@@ -123,7 +120,7 @@ function Event(props) {
       .storage()
       .ref(`events-images/${image}`)
       .getDownloadURL()
-      .then(response => {
+      .then((response) => {
         setImageEvent(response);
       });
   }, []);
@@ -135,12 +132,12 @@ function Event(props) {
       [
         {
           text: "Cancel",
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "Eliminar",
-          onPress: removeFavorite
-        }
+          onPress: removeFavorite,
+        },
       ],
       { cancelable: false }
     );
@@ -152,8 +149,8 @@ function Event(props) {
       .where("idEvent", "==", id)
       .where("idUser", "==", firebase.auth().currentUser.uid)
       .get()
-      .then(response => {
-        response.forEach(doc => {
+      .then((response) => {
+        response.forEach((doc) => {
           const idFavorite = doc.id;
           db.collection("events-favorites")
             .doc(idFavorite)
@@ -237,18 +234,18 @@ function UserNoLogged(props) {
 const styles = StyleSheet.create({
   viewBody: {
     flex: 1,
-    backgroundColor: "#f2f2f2"
+    backgroundColor: "#f2f2f2",
   },
   loaderRestaurants: {
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   restaurant: {
-    margin: 10
+    margin: 10,
   },
   image: {
     width: "100%",
-    height: 180
+    height: 180,
   },
   info: {
     flex: 1,
@@ -260,16 +257,16 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     marginTop: -30,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   name: {
     fontWeight: "bold",
-    fontSize: 20
+    fontSize: 20,
   },
   favorite: {
     marginTop: -35,
     backgroundColor: "#fff",
     padding: 15,
-    borderRadius: 100
-  }
+    borderRadius: 100,
+  },
 });

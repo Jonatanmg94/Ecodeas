@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, ScrollView, Text, Dimensions } from "react-native";
-import { Rating, Card, Icon, ListItem } from "react-native-elements";
+import { StyleSheet, View, ScrollView, Text, Dimensions, Linking } from "react-native";
+import { Rating, Card, Icon, ListItem, Button } from "react-native-elements";
 import { Col, Grid } from "react-native-easy-grid";
 import Carousel from "../../components/Carousel";
-//import Map from "../../components/Map";
 import moment from "moment";
 import ListReviews from "../../components/Events/ListReviews";
 import Toast from "react-native-easy-toast";
@@ -26,6 +25,8 @@ export default function Event(props) {
   firebase.auth().onAuthStateChanged(user => {
     user ? setUserLogged(true) : setUserLogged(false);
   });
+
+console.log(navigation.state.params)
 
   useEffect(() => {
     const arrayUrls = [];
@@ -133,15 +134,22 @@ export default function Event(props) {
         createAt={event.createAt}
       />
       <EventInfo
-        location={event.location}
         name={event.name}
         state={event.state}
+        contactPhone={event.contactPhone}
+        contactEmail={event.contactEmail}
+        contactName={event.contactName}
         country={event.country}
         street={event.street}
         zipCode={event.zipCode}
         dateInit={event.dateInit}
         dateFin={event.dateFin}
         capacity={event.capacity}
+      />
+       <ContactInfo
+        contactPhone={event.contactPhone}
+        contactEmail={event.contactEmail}
+        contactName={event.contactName}
       />
       <ListReviews
         navigation={navigation}
@@ -159,7 +167,7 @@ function TitleEvent(props) {
 
   return (
     <View style={styles.viewEventTitle}>
-      <Card>
+      <Card containerStyle={styles.cards}>
         <Grid>
           <Col style={{ width: "73%", paddingBottom: 10 }}>
             <Text style={styles.nameEvent}>{name}</Text>
@@ -187,7 +195,6 @@ function TitleEvent(props) {
 
 function EventInfo(props) {
   const {
-    location,
     name,
     state,
     country,
@@ -195,7 +202,7 @@ function EventInfo(props) {
     zipCode,
     dateInit,
     dateFin,
-    capacity
+    capacity,
   } = props;
 
   const listInfo = [
@@ -207,7 +214,7 @@ function EventInfo(props) {
     },
     {
       text: "Aforo: " + capacity + " personas",
-      iconName: "user",
+      iconName: "users",
       iconType: "font-awesome",
       action: null
     },
@@ -227,14 +234,64 @@ function EventInfo(props) {
 
   return (
     <View>
-      <Card>
+      <Card containerStyle={styles.cards}>
         <View style={styles.viewEventInfo}>
           <Text style={styles.eventInfoTitle}>Información del evento</Text>
         </View>
         <View style={styles.viewEventBlock}>
-          {/*
-          <Map location={location} name={name} height={160} />
-          */}
+          {listInfo.map((item, index) => (
+            <ListItem
+              key={index}
+              title={item.text}
+              leftIcon={{
+                name: item.iconName,
+                type: item.iconType,
+                color: "#2BA418"
+              }}
+              containerStyle={styles.containerListItem}
+            />
+          ))}
+        </View>
+      </Card>
+    </View>
+  );
+}
+
+function ContactInfo(props) {
+  const {
+    contactName,
+    contactEmail,
+    contactPhone
+  } = props;
+
+  const listInfo = [
+    {
+      text: contactName,
+      iconName: "user",
+      iconType: "font-awesome",
+      action: null
+    },
+        {
+      text: contactPhone,
+      iconName: "phone",
+      iconType: "font-awesome",
+      action: null
+    },
+    {
+      text: contactEmail,
+      iconName: "envelope",
+      iconType: "font-awesome",
+      action: null
+    },
+  ];
+
+  return (
+    <View>
+      <Card containerStyle={styles.cards}>
+        <View style={styles.viewEventInfo}>
+          <Text style={styles.eventInfoTitle}>Información de contacto</Text>
+        </View>
+        <View style={styles.viewEventBlock}>
           {listInfo.map((item, index) => (
             <ListItem
               key={index}
@@ -317,5 +374,8 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingLeft: 15,
     paddingRight: 5
+  },
+  cards: {
+    borderRadius: 20,
   }
 });

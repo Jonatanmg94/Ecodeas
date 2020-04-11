@@ -11,7 +11,7 @@ export default function Search(props) {
       <View>
         <Grid>
           <Col>
-            <Card>
+            <Card containerStyle={styles.cards}>
               <Image
                 source={require("../../assets/img/eventsearch.png")}
                 style={styles.image}
@@ -26,12 +26,11 @@ export default function Search(props) {
                 }}
               />
             </Card>
-
           </Col>
         </Grid>
         <Grid>
           <Col>
-            <Card>
+            <Card containerStyle={styles.cards}>
               <Image
                 source={require("../../assets/img/postsearch.png")}
                 style={styles.image}
@@ -58,21 +57,24 @@ const styles = StyleSheet.create({
     height: 150,
     width: "100%",
     marginBottom: 5,
-    tintColor: "#969696"
+    tintColor: "#969696",
   },
   txtGridTitles: {
     fontWeight: "bold",
     fontSize: 20,
     color: "#2BA418",
     textAlign: "center",
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   btnContainer: {
     width: "100%",
-    paddingTop: 10
+    paddingTop: 10,
   },
   btnStyle: {
     backgroundColor: "#2BA418",
-    borderRadius: 10
-  }
+    borderRadius: 10,
+  },
+  cards: {
+    borderRadius: 10,
+  },
 });

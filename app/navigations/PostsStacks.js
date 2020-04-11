@@ -5,7 +5,6 @@ import AddPostScreen from "../screens/Posts/addPost";
 import PostScreen from "../screens/Posts/Post";
 import AddReviewPostScreen from "../screens/Posts/AddReviewPost";
 
-
 const PostsStacks = createStackNavigator({
   Posts: {
     screen: PostsScreen,
@@ -13,12 +12,12 @@ const PostsStacks = createStackNavigator({
       title: "Posts",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   Post: {
     screen: PostScreen,
@@ -26,12 +25,12 @@ const PostsStacks = createStackNavigator({
       title: "Ficha del post",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   AddReviewPost: {
     screen: AddReviewPostScreen,
@@ -39,12 +38,12 @@ const PostsStacks = createStackNavigator({
       title: "Escribir valoración",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   AddPost: {
     screen: AddPostScreen,
@@ -52,12 +51,12 @@ const PostsStacks = createStackNavigator({
       title: "Añadir post",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
+        fontWeight: "bold",
+      },
+    }),
   },
   ListPosts: {
     screen: ListPostScreen,
@@ -65,13 +64,13 @@ const PostsStacks = createStackNavigator({
       title: "Lista de posts",
       headerTintColor: "white",
       headerStyle: {
-        backgroundColor: "#2BA418"
+        backgroundColor: "#2BA418",
       },
       headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    })
-  }
+        fontWeight: "bold",
+      },
+    }),
+  },
 });
 
 export default PostsStacks;
