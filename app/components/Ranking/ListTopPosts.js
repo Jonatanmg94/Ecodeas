@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Card, Image, Icon, Rating } from "react-native-elements";
 import * as firebase from "firebase";
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 export default function ListTopPosts(props) {
   const { posts, navigation } = props;
@@ -70,13 +71,19 @@ function Post(props) {
           source={{ uri: imagePost }}
         />
         <View style={styles.titleRating}>
-          <Text style={styles.title}>{name}</Text>
-          <Rating
-            imageSize={20}
-            startingValue={rating}
-            readonly
-            style={styles.rating}
-          />
+          <Grid>
+            <Col style={{ width: "75%" }}>
+              <Text style={styles.title}>{name}</Text>
+            </Col>
+            <Col>
+              <Rating
+                imageSize={20}
+                startingValue={rating}
+                readonly
+                style={styles.rating}
+              />
+            </Col>
+          </Grid>
         </View>
         <Text style={styles.description}>
           {description.substring(0, 80) + "..."}

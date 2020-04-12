@@ -3,14 +3,14 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import ActionButton from "react-native-action-button";
 import * as firebase from "firebase";
 import { Col, Row, Grid } from "react-native-easy-grid";
-import { Card } from "react-native-elements";
+import { Card, Icon } from "react-native-elements";
 
 export default function Events(props) {
   const { navigation } = props;
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(userInfo => {
+    firebase.auth().onAuthStateChanged((userInfo) => {
       setUser(userInfo);
     });
   }, []);
@@ -22,7 +22,7 @@ export default function Events(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListEvents", {
-                eventsCategory: "recogidas"
+                eventsCategory: "recogidas",
               });
             }}
           >
@@ -38,7 +38,7 @@ export default function Events(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListEvents", {
-                eventsCategory: "charlas"
+                eventsCategory: "charlas",
               });
             }}
           >
@@ -54,7 +54,7 @@ export default function Events(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListEvents", {
-                eventsCategory: "manifestaciones"
+                eventsCategory: "manifestaciones",
               });
             }}
           >
@@ -72,7 +72,7 @@ export default function Events(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListEvents", {
-                eventsCategory: "talleres"
+                eventsCategory: "talleres",
               });
             }}
           >
@@ -88,7 +88,7 @@ export default function Events(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListEvents", {
-                eventsCategory: "ferias"
+                eventsCategory: "ferias",
               });
             }}
           >
@@ -105,7 +105,7 @@ export default function Events(props) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ListEvents", {
-                eventsCategory: "reforestaciones"
+                eventsCategory: "reforestaciones",
               });
             }}
           >
@@ -138,20 +138,20 @@ function AddEventButton(props) {
 
 const styles = StyleSheet.create({
   viewBody: {
-    flex: 1
+    flex: 1,
   },
   image: {
     height: 70,
     width: "100%",
     marginBottom: 10,
-    tintColor: "#969696"
+    tintColor: "#969696",
   },
   txtGridTitles: {
     fontWeight: "bold",
     color: "#2BA418",
-    textAlign: "center"
+    textAlign: "center",
   },
   cards: {
     borderRadius: 20,
-  }
+  },
 });

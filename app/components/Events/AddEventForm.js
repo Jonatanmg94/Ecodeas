@@ -302,7 +302,7 @@ function FormAdd(props) {
         <Input
           maxLength={100}
           labelStyle={styles.inputLabel}
-          label="Persona de contacto..."
+          label="Persona de contacto"
           placeholder="nombre completo..."
           containerStyle={styles.input}
           onChange={(e) => setEventContactName(e.nativeEvent.text)}

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { View } from "react-native";
 import Toast from "react-native-easy-toast";
 import ListTopPosts from "../components/Ranking/ListTopPosts";
-
 import { firebaseApp } from "../utils/Firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";

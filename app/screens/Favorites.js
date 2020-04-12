@@ -16,6 +16,7 @@ import { firebaseApp } from "../utils/Firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
 const db = firebase.firestore(firebaseApp);
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 export default function Favorites(props) {
   const { navigation } = props;
@@ -182,16 +183,22 @@ function Event(props) {
         />
       </TouchableOpacity>
       <View style={styles.info}>
-        <Text style={styles.name}>{name}</Text>
-        <Icon
-          type="material-community"
-          name="heart"
-          color="#00a680"
-          containerStyle={styles.favorite}
-          onPress={confirmRemoveFavorite}
-          size={40}
-          underlayColor="transparent"
-        />
+        <Grid>
+          <Col style={{ width: "80%" }}>
+            <Text style={styles.name}>{name}</Text>
+          </Col>
+          <Col>
+            <Icon
+              type="material-community"
+              name="heart"
+              color="#00a680"
+              containerStyle={styles.favorite}
+              onPress={confirmRemoveFavorite}
+              size={40}
+              underlayColor="transparent"
+            />
+          </Col>
+        </Grid>
       </View>
     </View>
   );
@@ -249,11 +256,12 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
+    width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 10,
     paddingTop: 10,
     paddingBottom: 10,
     marginTop: -30,
@@ -261,7 +269,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: "bold",
-    fontSize: 20,
+    paddingRight: 5,
   },
   favorite: {
     marginTop: -35,

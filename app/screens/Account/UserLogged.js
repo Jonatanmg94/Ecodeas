@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
-import { Button, Card, Overlay } from "react-native-elements";
+import { View, StyleSheet } from "react-native";
+import { Button, Card, Text } from "react-native-elements";
 import * as firebase from "firebase";
 import UserProfile from "../../components/Account/UserProfile";
 import Toast from "react-native-easy-toast";
@@ -26,17 +26,18 @@ function UserLogged(props) {
   const userLoginCheck = async () => {
     const user = firebase.auth().currentUser;
     user.providerData.forEach((userInfo) => {
-
       if (userInfo.providerId != "password") {
-        toastRef.current.show("Ha iniciado sesión con una red social, debe modificar en ella sus datos personales.", 2500);
+        toastRef.current.show(
+          "Ha iniciado sesión con una red social, debe modificar en ella sus datos personales.",
+          2500
+        );
       } else {
         navigation.navigate("MyAccountSettings", {
-          setReloadData: () => setReloadData(true)
+          setReloadData: () => setReloadData(true),
         });
       }
-
     });
-  }
+  };
 
   return (
     <View>
@@ -63,7 +64,12 @@ function UserLogged(props) {
       </Card>
       <Toast ref={toastRef} position="top" opacity={0.8} />
       <Loading text={textLoading} isVisible={isLoading} />
-
+      <Text
+        style={styles.infoLink}
+        onPress={() => navigation.navigate("Information")}
+      >
+        ¿Qué es Ecodeas?{"\n"}Conoce nuestros objetivos
+      </Text>
     </View>
   );
 }
@@ -74,24 +80,30 @@ const styles = StyleSheet.create({
   btnContainerLogin: {
     width: "100%",
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   btnLogin: {
     backgroundColor: "#2BA418",
     borderRadius: 10,
-    marginBottom: 20
+    marginBottom: 20,
   },
   btnContainerEditProfile: {
     width: "100%",
     paddingLeft: 20,
     paddingRight: 20,
-    marginBottom: 10
+    marginBottom: 10,
   },
   btnEditProfile: {
     backgroundColor: "#7E7E7E",
-    borderRadius: 10
+    borderRadius: 10,
   },
   cards: {
     borderRadius: 20,
-  }
+  },
+  infoLink: {
+    color: "grey",
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 20,
+  },
 });

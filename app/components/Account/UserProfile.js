@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import { Avatar, Card } from "react-native-elements";
+import { Avatar, Button } from "react-native-elements";
 import * as firebase from "firebase";
+
 import { YellowBox } from "react-native";
 
 export default function UserProfile(props) {
